@@ -77,33 +77,54 @@ void   reader(t_gen *gen, int fd)
     }
 	gen->list = gen->run;
 }
-/*
-void    line(int x0, int y0, int x1, int y1)
-{
-    int dx[2];
-    int sx;
-    int sy; 
-    int err;
-    int e2;
 
-    dx[0] = abs(x1 - x0);
-    dx[1] = abs(y1 - y0);
-    sx = x0 < x1 ? 1 : -1;
-    sy = y0 < y1 ? 1 : -1;
-    err = (dx[0] > dx[1] ? dx[0] : -dx[1]) / 2;
-    while (1)
-    {
-        setPixel(x0, y0);
-        if (x0 == x1 && y0 == y1)
-            break;
-        e2 = err;
-        if (e2 > -dx[0])
-            err -= dx[1]; x0 += sx;
-        if (e2 < dx[1])
-            err += dx[0]; y0 += sy;
-    }
+void put_pixel(int x, int y, t_gen *gen)
+{
+	int i;
+	i = (x + (y * (gen->size_line / 4)));
+	gen->field[i] = 0xFFFFFF;
 }
-*/
+
+//void    line(int xy[2], int x1, int y1, t_gen *gen)
+//{
+//    int dx[2];
+//    int sx;
+//    int sy;
+//    int err;
+//    int e2;
+//
+//    dx[0] = abs(x1 - xy[0]);
+//    dx[1] = abs(y1 - xy[1]);
+//    sx = xy[0] < x1 ? 1 : -1;
+//    sy = xy[1] < y1 ? 1 : -1;
+//    err = (dx[0] > dx[1] ? dx[0] : -dx[1]) / 2;
+//    while (1)
+//    {
+//        put_pixel(xy[0], xy[1], gen);
+//        if (xy[0] == x1 && xy[1] == y1)
+//            break;
+//        e2 = err;
+//        if (e2 > -dx[0])
+//            err -= dx[1]; xy[0] += sx;
+//        if (e2 < dx[1])
+//            err += dx[0]; xy[1]+= sy;
+//    }
+//}
+
+void line(int x0, int y0, int x1, int y1, t_gen *gen) {
+
+	int dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
+	int dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
+	int err = (dx>dy ? dx : -dy)/2, e2;
+
+	for(;;){
+		put_pixel(x0,y0, gen);
+		if (x0==x1 && y0==y1) break;
+		e2 = err;
+		if (e2 >-dx) { err -= dy; x0 += sx; }
+		if (e2 < dy) { err += dx; y0 += sy; }
+	}
+}
 
 void     ft_scale(t_gen *gen)
 {
@@ -146,18 +167,16 @@ void    max_xy(t_gen *gen)
 	gen->list = gen->run;
 }
 
-void put_pixel(int x, int y, t_gen *gen)
-{
-    int i;
-	i = (x + (y * (gen->size_line / 4)));
-    gen->field[i] = 0xFFFFFF;
-}
 
-void    print_in_window(void *init, void *image, void *window, t_gen *gen)
+void    print_in_window(t_gen *gen)
 {
 	int x_center;
 	int y_center;
-    gen->field = (int*)mlx_get_data_addr(image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
+	int temp[2];
+	t_fdf   *st;
+
+	st = gen->run;
+    gen->field = (int*)mlx_get_data_addr(gen->image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
 	max_xy(gen);
 	x_center = (WINDOW_X / 2) - (gen->max_x / 2);
 	y_center = (WINDOW_Y / 2) - (gen->max_y / 2);
@@ -173,27 +192,35 @@ void    print_in_window(void *init, void *image, void *window, t_gen *gen)
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
-    while (gen->list)
+	st = st->next;
+	while (gen->list)
     {
-        while (gen->list->clone)
+        while (gen->list->row->next)
         {
-            put_pixel(gen->list->clone->x, gen->list->y, gen);
-            gen->list->clone = gen->list->clone->next;
+	        temp[0] = gen->list->row->x;
+	        temp[1] = gen->list->y;
+	        gen->list->row = gen->list->row->next;
+	        line(temp[0], temp[1], gen->list->row->x, gen->list->y, gen);
+//	        if (st->next)
+//	        {
+//		        line(temp[0], temp[1], st->row->x, st->y, gen);
+//		        st->row = st->row->next;
+//	        }
         }
+	    gen->list->row = gen->list->clone;
         gen->list = gen->list->next;
+	    if (st->next)
+	        st = st->next;
     }
 	gen->list = gen->run;
-    mlx_put_image_to_window(init, window, image, 0, 0);
-    mlx_destroy_image(init, image);
-    mlx_loop(init);
+    mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+    mlx_destroy_image(gen->init, gen->image);
+    mlx_loop(gen->init);
 }
 
 int main(int argc, char **argv)
 {
 	t_gen   gen;
-	void    *init;
-	void    *window;
-    void    *image;
 	int     fd;
 
     argc = 1;
@@ -201,11 +228,11 @@ int main(int argc, char **argv)
 	gen.run = gen.list;
     argv[1] = "dd";
     //open(argv[1], O_RDONLY);
-	fd = open("/Users/dlytvyn/FDF/test_maps/mars.fdf", O_RDONLY);
+	fd = open("/Users/dlytvyn/FDF/test_maps/42.fdf", O_RDONLY);
     reader(&gen, fd);
 	ft_scale(&gen);
-    init = mlx_init();
-	window = mlx_new_window(init, WINDOW_X, WINDOW_Y, "FDF Project!");
-	image = mlx_new_image(init, WINDOW_X, WINDOW_Y);
-    print_in_window(init, image, window, &gen);
+    gen.init = mlx_init();
+	gen.window = mlx_new_window(gen.init, WINDOW_X, WINDOW_Y, "FDF Project!");
+	gen.image = mlx_new_image(gen.init, WINDOW_X, WINDOW_Y);
+    print_in_window(&gen);
 }

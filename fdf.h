@@ -47,4 +47,7 @@ typedef struct      s_gen
 	int             endian;
 	int             max_x;
 	int             max_y;
+	void            *init;
+	void            *window;
+	void            *image;
 }                   t_gen;
