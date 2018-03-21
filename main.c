@@ -14,6 +14,10 @@
 
 // gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit main.c GNL/get_next_line.c libft.a
 
+
+// set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lmlx -framework OpenGL -framework AppKit")
+
+
 t_row   *new_row_list()
 {
 	t_row   *list;
@@ -28,61 +32,63 @@ t_row   *new_row_list()
 
 t_fdf   *new_list()
 {
-    t_fdf   *list;
+	t_fdf   *list;
 
-    list = (t_fdf*)malloc(sizeof(t_fdf));
+	list = (t_fdf*)malloc(sizeof(t_fdf));
 	list->row = new_row_list();
 	list->clone = list->row;
-    list->y = 0;
-    list->next = NULL;
-    return (list);
+	list->y = 0;
+	list->next = NULL;
+	return (list);
 }
 
 void   reader(t_gen *gen, int fd)
 {
-    char    *line;
-    char    **array;
-    int     i;
-    int     j;
+	char    *line;
+	char    **array;
+	int     i;
+	int     j;
 
-    j = 0;
-    while (get_next_line(fd, &line))
-    {
-        array = ft_strsplit(line, ' ');
-        i = 0;
-        if (j > 0)
-        {
-            gen->list->next = new_list();
-            gen->list = gen->list->next;
-        }
-        while (array[i])
-        {
-            if (i > 0)
-            {
-                gen->list->row->next = new_row_list();
-                gen->list->row = gen->list->row->next;
-            }
-            gen->list->row->x = i;
-            gen->list->y = j;
-            gen->list->row->z = ft_atoi(array[i]);
-	        if (i > gen->max_x)
-		        gen->max_x = i;
-            i++;
-        }
-	    gen->list->row = gen->list->clone;
-	    if (j > gen->max_y)
-		    gen->max_y = j;
-        ft_strdel(&line);
-        j++;
-    }
+	j = 0;
+	while (get_next_line(fd, &line))
+	{
+		array = ft_strsplit(line, ' ');
+		i = 0;
+		if (j > 0)
+		{
+			gen->list->next = new_list();
+			gen->list = gen->list->next;
+		}
+		while (array[i])
+		{
+			if (i > 0)
+			{
+				gen->list->row->next = new_row_list();
+				gen->list->row = gen->list->row->next;
+			}
+			gen->list->row->x = i;
+			gen->list->y = j;
+			gen->list->row->z = ft_atoi(array[i]);
+			if (i > gen->max_x)
+				gen->max_x = i;
+			i++;
+		}
+		gen->list->row = gen->list->clone;
+		if (j > gen->max_y)
+			gen->max_y = j;
+		ft_strdel(&line);
+		j++;
+	}
 	gen->list = gen->run;
 }
 
 void put_pixel(int x, int y, t_gen *gen)
 {
 	int i;
-	i = (x + (y * (gen->size_line / 4)));
+	i = (x + (y * (6000 / 4)));
+//	printf("iiii: %d\n", i);
 	gen->field[i] = 0xFFFFFF;
+//	printf("ggggggg\n");
 }
 
 //void    line(int xy[2], int x1, int y1, t_gen *gen)
@@ -167,16 +173,55 @@ void    max_xy(t_gen *gen)
 	gen->list = gen->run;
 }
 
+int exit_x(void)
+{
+	exit(0);
+}
 
-void    print_in_window(t_gen *gen)
+
+void    clear(t_gen *gen)
+{
+	ft_bzero(gen->field, WINDOW_X * WINDOW_Y * 4);
+	gen->size_line = 0;
+	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+}
+
+
+
+int	manage_keys(int key, t_gen *gen)
+{
+	if (key == 6)
+		gen->angle_z += 2;
+	else if (key == 7)
+		gen->angle_x += 2;
+	else if (key == 16)
+		gen->angle_y += 2;
+	else if (key == 53)
+		exit_x();
+	else if (key == 123)  //to left
+		move_to_left(gen);
+	else if (key == 124)  // to right
+		move_to_right(gen);
+	else if (key == 126)   // move up
+		move_up(gen);
+	else if (key == 125) // move down
+		move_down(gen);
+
+	printf("Angle x: %d\n", gen->angle_x);
+	rotate_matrix(gen);
+	//mlx_destroy_image(gen->init, gen->image);
+	mlx_clear_window(gen->init, gen->window);
+	clear(gen);
+	print_in_window(gen);
+	return (0);
+}
+
+
+void    centering(t_gen *gen)
 {
 	int x_center;
 	int y_center;
-	int temp[2];
-	t_fdf   *st;
 
-	st = gen->run;
-    gen->field = (int*)mlx_get_data_addr(gen->image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
 	max_xy(gen);
 	x_center = (WINDOW_X / 2) - (gen->max_x / 2);
 	y_center = (WINDOW_Y / 2) - (gen->max_y / 2);
@@ -192,47 +237,60 @@ void    print_in_window(t_gen *gen)
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
-	st = st->next;
-	while (gen->list)
-    {
-        while (gen->list->row->next)
-        {
-	        temp[0] = gen->list->row->x;
-	        temp[1] = gen->list->y;
-	        gen->list->row = gen->list->row->next;
-	        line(temp[0], temp[1], gen->list->row->x, gen->list->y, gen);
-//	        if (st->next)
-//	        {
-//		        line(temp[0], temp[1], st->row->x, st->y, gen);
-//		        st->row = st->row->next;
-//	        }
-        }
-	    gen->list->row = gen->list->clone;
-        gen->list = gen->list->next;
-	    if (st->next)
-	        st = st->next;
-    }
-	gen->list = gen->run;
-    mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
-    mlx_destroy_image(gen->init, gen->image);
-    mlx_loop(gen->init);
 }
 
-int main(int argc, char **argv)
+void    print_in_window(t_gen *gen)
 {
-	t_gen   gen;
-	int     fd;
+	int temp[2];
 
-    argc = 1;
-    gen.list = new_list();
+	gen->field = (int*)mlx_get_data_addr(gen->image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
+	while (gen->list)
+	{
+		while (gen->list->row)
+		{
+			temp[0] = gen->list->row->x;
+			temp[1] = gen->list->y;
+			if (gen->list->row->next)
+				line(temp[0], temp[1], gen->list->row->next->x, gen->list->y, gen);    // horizontal lines
+			else if (gen->list->next)
+				line(gen->list->row->x, gen->list->y, gen->list->row->x, gen->list->next->y, gen); // last vertical line
+			if (gen->list->next)
+				line(temp[0], temp[1], gen->list->row->x, gen->list->next->y, gen);   // vertical lines
+			gen->list->row = gen->list->row->next;
+		}
+		gen->list->row = gen->list->clone;
+		gen->list = gen->list->next;
+	}
+	printf("here it is\n");
+	gen->list = gen->run;
+	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+	//mlx_destroy_image(gen->init, gen->image);
+	printf("come\n");
+}
+
+int main(int argc, char **argv) {
+	t_gen gen;
+	int fd;
+
+	argc = 1;
+	gen.max_x = 0;
+	gen.max_y = 0;
+	gen.angle_x = 0;
+	gen.angle_y = 0;
+	gen.angle_z = 0;
+	gen.list = new_list();
 	gen.run = gen.list;
-    argv[1] = "dd";
-    //open(argv[1], O_RDONLY);
+	argv[1] = "dd";
+	//open(argv[1], O_RDONLY);
 	fd = open("/Users/dlytvyn/FDF/test_maps/42.fdf", O_RDONLY);
-    reader(&gen, fd);
+	reader(&gen, fd);
 	ft_scale(&gen);
-    gen.init = mlx_init();
+	gen.init = mlx_init();
 	gen.window = mlx_new_window(gen.init, WINDOW_X, WINDOW_Y, "FDF Project!");
 	gen.image = mlx_new_image(gen.init, WINDOW_X, WINDOW_Y);
-    print_in_window(&gen);
+	centering(&gen);
+	print_in_window(&gen);
+	mlx_hook(gen.window, 2, 5, manage_keys, &gen);
+	mlx_hook(gen.window, 17, 1L << 17, exit_x, &gen);
+	mlx_loop(gen.init);
 }
