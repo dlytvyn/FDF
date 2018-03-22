@@ -10,7 +10,7 @@ void    move_to_right(t_gen *gen)
 	{
 		while (gen->list->row)
 		{
-			gen->list->row->x += 3;
+			gen->list->row->x += 7;
 			gen->list->row = gen->list->row->next;
 		}
 		gen->list->row = gen->list->clone;
@@ -25,7 +25,7 @@ void    move_to_left(t_gen *gen)
 	{
 		while (gen->list->row)
 		{
-			gen->list->row->x -=3;
+			gen->list->row->x -=7;
 			gen->list->row = gen->list->row->next;
 		}
 		gen->list->row = gen->list->clone;
@@ -38,7 +38,7 @@ void    move_up(t_gen *gen)
 {
 	while (gen->list)
 	{
-		gen->list->y -= 3;
+		gen->list->y -= 7;
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
@@ -48,7 +48,7 @@ void    move_down(t_gen *gen)
 {
 	while (gen->list)
 	{
-		gen->list->y += 3;
+		gen->list->y += 7;
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;

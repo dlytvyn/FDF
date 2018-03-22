@@ -23,15 +23,15 @@
 
 typedef struct      s_row
 {
-    double          x;
-    double          z;
+    double         	x;
+    double         	z;
     char            *color;
     struct  s_row   *next;
 }                   t_row;
 
 typedef struct      s_fdf
 {
-    double          y;
+    double          	y;
     struct s_row    *row;
 	struct s_row    *clone;
     struct s_fdf    *next;
@@ -53,11 +53,17 @@ typedef struct      s_gen
 	int             angle_x;
 	int             angle_y;
 	int             angle_z;
+	double			scale;
 }                   t_gen;
 
-void    rotate_matrix(t_gen *gen);
+void    rotate_matrix(t_gen *gen, int key);
 void    print_in_window(t_gen *gen);
 void    move_to_left(t_gen *gen);
 void    move_to_right(t_gen *gen);
 void    move_up(t_gen *gen);
 void    move_down(t_gen *gen);
+void    centering(t_gen *gen);
+void	increase(t_gen *gen);
+void	decrease(t_gen *gen);
+void     ft_scale(t_gen *gen);
+void     max_xy(t_gen *gen);

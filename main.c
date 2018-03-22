@@ -17,7 +17,6 @@
 
 // set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lmlx -framework OpenGL -framework AppKit")
 
-
 t_row   *new_row_list()
 {
 	t_row   *list;
@@ -85,7 +84,7 @@ void   reader(t_gen *gen, int fd)
 void put_pixel(int x, int y, t_gen *gen)
 {
 	int i;
-	i = (x + (y * (6000 / 4)));
+	i = (x + (y * (gen->size_line / 4)));
 //	printf("iiii: %d\n", i);
 	gen->field[i] = 0xFFFFFF;
 //	printf("ggggggg\n");
@@ -132,24 +131,28 @@ void line(int x0, int y0, int x1, int y1, t_gen *gen) {
 	}
 }
 
+void	get_scale(t_gen *gen)
+{
+	if (WINDOW_X - gen->max_x > WINDOW_Y - gen->max_y)
+		gen->scale = WINDOW_X / gen->max_x;
+	else
+		gen->scale = WINDOW_Y / gen->max_y;
+	gen->scale = (gen->scale / 100) * SCALE;
+	ft_scale(gen);
+}
+
 void     ft_scale(t_gen *gen)
 {
-	double scale;
-
-	if (WINDOW_X - gen->max_x > WINDOW_Y - gen->max_y)
-		scale = WINDOW_X / gen->max_x;
-	else
-		scale = WINDOW_Y / gen->max_y;
-	scale = (scale / 100) * SCALE;
 	while (gen->list)
 	{
 		while (gen->list->row)
 		{
-			gen->list->row->x *= scale;
+			gen->list->row->x *= gen->scale;
+			gen->list->row->z *= gen->scale;
 			gen->list->row = gen->list->row->next;
 		}
 		gen->list->row = gen->list->clone;
-		gen->list->y *= scale;
+		gen->list->y *= gen->scale;
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
@@ -178,15 +181,12 @@ int exit_x(void)
 	exit(0);
 }
 
-
 void    clear(t_gen *gen)
 {
 	ft_bzero(gen->field, WINDOW_X * WINDOW_Y * 4);
 	gen->size_line = 0;
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 }
-
-
 
 int	manage_keys(int key, t_gen *gen)
 {
@@ -206,16 +206,30 @@ int	manage_keys(int key, t_gen *gen)
 		move_up(gen);
 	else if (key == 125) // move down
 		move_down(gen);
-
-	printf("Angle x: %d\n", gen->angle_x);
-	rotate_matrix(gen);
+	else if (key == 116)
+		increase(gen);
+	else if (key == 121)
+		decrease(gen);
+	else if (key == 69)
+	{
+		gen->scale = 1.1;
+		ft_scale(gen);
+		centering(gen);
+	}
+	else if (key == 78)
+	{
+		gen->scale = 0.9;
+		ft_scale(gen);
+		centering(gen);
+	}
+	//printf("Angle x: %d\n", gen->angle_x);
+	rotate_matrix(gen, key);
 	//mlx_destroy_image(gen->init, gen->image);
 	mlx_clear_window(gen->init, gen->window);
 	clear(gen);
 	print_in_window(gen);
 	return (0);
 }
-
 
 void    centering(t_gen *gen)
 {
@@ -229,14 +243,20 @@ void    centering(t_gen *gen)
 	{
 		while (gen->list->row)
 		{
+			//printf("X before: %f\n", gen->list->row->x);
 			gen->list->row->x += x_center;
+			//printf("X_center: %d\n", x_center);
+			//printf("Y_center: %d\n", y_center);
+			//printf("X after centering: %f\n", gen->list->row->x);
 			gen->list->row = gen->list->row->next;
 		}
 		gen->list->y += y_center;
+		printf("Y after centering: %f\n", gen->list->y);
 		gen->list->row = gen->list->clone;
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
+	printf("Exit\n");
 }
 
 void    print_in_window(t_gen *gen)
@@ -260,12 +280,13 @@ void    print_in_window(t_gen *gen)
 		}
 		gen->list->row = gen->list->clone;
 		gen->list = gen->list->next;
+		printf("here\n");
 	}
-	printf("here it is\n");
+	//printf("here it is\n");
 	gen->list = gen->run;
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 	//mlx_destroy_image(gen->init, gen->image);
-	printf("come\n");
+	//printf("come\n");
 }
 
 int main(int argc, char **argv) {
@@ -284,7 +305,7 @@ int main(int argc, char **argv) {
 	//open(argv[1], O_RDONLY);
 	fd = open("/Users/dlytvyn/FDF/test_maps/42.fdf", O_RDONLY);
 	reader(&gen, fd);
-	ft_scale(&gen);
+	get_scale(&gen);
 	gen.init = mlx_init();
 	gen.window = mlx_new_window(gen.init, WINDOW_X, WINDOW_Y, "FDF Project!");
 	gen.image = mlx_new_image(gen.init, WINDOW_X, WINDOW_Y);
