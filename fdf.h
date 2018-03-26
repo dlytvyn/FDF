@@ -47,13 +47,19 @@ typedef struct      s_gen
 	int             endian;
 	int             max_x;
 	int             max_y;
+	int				min_x;
+	int				min_y;
 	void            *init;
 	void            *window;
 	void            *image;
-	int             angle_x;
-	int             angle_y;
-	int             angle_z;
+	double             angle_x;
+	double             angle_y;
+	double             angle_z;
 	double			scale;
+	double			x_temp;
+	double			y_temp;
+	double			diff_x;
+	double			diff_y;
 }                   t_gen;
 
 void    rotate_matrix(t_gen *gen, int key);
@@ -67,3 +73,4 @@ void	increase(t_gen *gen);
 void	decrease(t_gen *gen);
 void     ft_scale(t_gen *gen);
 void     max_xy(t_gen *gen);
+void    centering_zoom(t_gen *gen);

@@ -41,18 +41,36 @@ t_fdf   *new_list()
 	return (list);
 }
 
+int		array_len(char **ar)
+{
+	int	i;
+
+	i = 0;
+	while (ar[i])
+		i++;
+	return (i);
+}
+
 void   reader(t_gen *gen, int fd)
 {
 	char    *line;
 	char    **array;
 	int     i;
 	int     j;
+	int		len;
 
 	j = 0;
 	while (get_next_line(fd, &line))
 	{
 		array = ft_strsplit(line, ' ');
 		i = 0;
+		if (j == 0)
+			len = array_len(array);
+		if (array_len(array) != len)
+		{
+			write(1, "Error!", 6);
+			exit (1);
+		}
 		if (j > 0)
 		{
 			gen->list->next = new_list();
@@ -84,10 +102,11 @@ void   reader(t_gen *gen, int fd)
 void put_pixel(int x, int y, t_gen *gen)
 {
 	int i;
+
+	if (x >= gen->size_line / 4 || x < 0 || y < 0)
+		return ;
 	i = (x + (y * (gen->size_line / 4)));
-//	printf("iiii: %d\n", i);
 	gen->field[i] = 0xFFFFFF;
-//	printf("ggggggg\n");
 }
 
 //void    line(int xy[2], int x1, int y1, t_gen *gen)
@@ -143,6 +162,9 @@ void	get_scale(t_gen *gen)
 
 void     ft_scale(t_gen *gen)
 {
+	max_xy(gen);
+	gen->x_temp = ((gen->max_x + gen->min_x) / 2);
+	gen->y_temp = ((gen->max_y + gen->min_y) / 2);
 	while (gen->list)
 	{
 		while (gen->list->row)
@@ -160,6 +182,8 @@ void     ft_scale(t_gen *gen)
 
 void    max_xy(t_gen *gen)
 {
+	gen->min_x = gen->list->row->x;
+	gen->min_y = gen->list->y;
 	while (gen->list)
 	{
 		while (gen->list->row)
@@ -191,11 +215,11 @@ void    clear(t_gen *gen)
 int	manage_keys(int key, t_gen *gen)
 {
 	if (key == 6)
-		gen->angle_z += 2;
+		gen->angle_z = 15;
 	else if (key == 7)
-		gen->angle_x += 2;
+		gen->angle_x = 15;
 	else if (key == 16)
-		gen->angle_y += 2;
+		gen->angle_y = 15;
 	else if (key == 53)
 		exit_x();
 	else if (key == 123)  //to left
@@ -214,21 +238,41 @@ int	manage_keys(int key, t_gen *gen)
 	{
 		gen->scale = 1.1;
 		ft_scale(gen);
-		centering(gen);
+		centering_zoom(gen);
 	}
 	else if (key == 78)
 	{
 		gen->scale = 0.9;
 		ft_scale(gen);
-		centering(gen);
+		centering_zoom(gen);
 	}
-	//printf("Angle x: %d\n", gen->angle_x);
 	rotate_matrix(gen, key);
-	//mlx_destroy_image(gen->init, gen->image);
-	mlx_clear_window(gen->init, gen->window);
+	//mlx_clear_window(gen->init, gen->window);
 	clear(gen);
 	print_in_window(gen);
 	return (0);
+}
+
+void    centering_zoom(t_gen *gen)
+{
+	double x_center;
+	double y_center;
+
+	max_xy(gen);
+	x_center = gen->x_temp - ((gen->max_x + gen->min_x) / 2);
+	y_center = gen->y_temp - ((gen->max_y + gen->min_y) / 2);
+	while (gen->list)
+	{
+		while (gen->list->row)
+		{
+			gen->list->row->x += x_center;
+			gen->list->row = gen->list->row->next;
+		}
+		gen->list->y += y_center;
+		gen->list->row = gen->list->clone;
+		gen->list = gen->list->next;
+	}
+	gen->list = gen->run;
 }
 
 void    centering(t_gen *gen)
@@ -237,26 +281,20 @@ void    centering(t_gen *gen)
 	int y_center;
 
 	max_xy(gen);
-	x_center = (WINDOW_X / 2) - (gen->max_x / 2);
-	y_center = (WINDOW_Y / 2) - (gen->max_y / 2);
+	x_center = (WINDOW_X / 2) - ((gen->max_x + gen->min_x) / 2);
+	y_center = (WINDOW_Y / 2) - ((gen->max_y + gen->min_y) / 2);
 	while (gen->list)
 	{
 		while (gen->list->row)
 		{
-			//printf("X before: %f\n", gen->list->row->x);
 			gen->list->row->x += x_center;
-			//printf("X_center: %d\n", x_center);
-			//printf("Y_center: %d\n", y_center);
-			//printf("X after centering: %f\n", gen->list->row->x);
 			gen->list->row = gen->list->row->next;
 		}
 		gen->list->y += y_center;
-		printf("Y after centering: %f\n", gen->list->y);
 		gen->list->row = gen->list->clone;
 		gen->list = gen->list->next;
 	}
 	gen->list = gen->run;
-	printf("Exit\n");
 }
 
 void    print_in_window(t_gen *gen)
@@ -280,13 +318,9 @@ void    print_in_window(t_gen *gen)
 		}
 		gen->list->row = gen->list->clone;
 		gen->list = gen->list->next;
-		printf("here\n");
 	}
-	//printf("here it is\n");
 	gen->list = gen->run;
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
-	//mlx_destroy_image(gen->init, gen->image);
-	//printf("come\n");
 }
 
 int main(int argc, char **argv) {
