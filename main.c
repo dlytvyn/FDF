@@ -1,102 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dlytvyn <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/16 12:39:42 by dlytvyn           #+#    #+#             */
-/*   Updated: 2018/03/16 12:39:43 by dlytvyn          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "fdf.h"
 
 // gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit main.c GNL/get_next_line.c libft.a
 
-
-// set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lmlx -framework OpenGL -framework AppKit")
-
-t_row   *new_row_list()
+void    clear(t_gen *gen)
 {
-	t_row   *list;
-
-	list = (t_row*)malloc(sizeof(t_row));
-	list->x = 0;
-	list->z = 0;
-	list->color = NULL;
-	list->next = NULL;
-	return (list);
-}
-
-t_fdf   *new_list()
-{
-	t_fdf   *list;
-
-	list = (t_fdf*)malloc(sizeof(t_fdf));
-	list->row = new_row_list();
-	list->clone = list->row;
-	list->y = 0;
-	list->next = NULL;
-	return (list);
-}
-
-int		array_len(char **ar)
-{
-	int	i;
-
-	i = 0;
-	while (ar[i])
-		i++;
-	return (i);
-}
-
-void   reader(t_gen *gen, int fd)
-{
-	char    *line;
-	char    **array;
-	int     i;
-	int     j;
-	int		len;
-
-	j = 0;
-	while (get_next_line(fd, &line))
-	{
-		array = ft_strsplit(line, ' ');
-		i = 0;
-		if (j == 0)
-			len = array_len(array);
-		if (array_len(array) != len)
-		{
-			write(1, "Error!", 6);
-			exit (1);
-		}
-		if (j > 0)
-		{
-			gen->list->next = new_list();
-			gen->list = gen->list->next;
-		}
-		while (array[i])
-		{
-			if (i > 0)
-			{
-				gen->list->row->next = new_row_list();
-				gen->list->row = gen->list->row->next;
-			}
-			gen->list->row->x = i;
-			gen->list->y = j;
-			gen->list->row->z = ft_atoi(array[i]);
-			if (i > gen->max_x)
-				gen->max_x = i;
-			i++;
-		}
-		gen->list->row = gen->list->clone;
-		if (j > gen->max_y)
-			gen->max_y = j;
-		ft_strdel(&line);
-		j++;
-	}
-	gen->list = gen->run;
+	ft_bzero(gen->field, WINDOW_X * WINDOW_Y * 4);
+	gen->size_line = 0;
+	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 }
 
 void put_pixel(int x, int y, t_gen *gen)
@@ -109,95 +19,183 @@ void put_pixel(int x, int y, t_gen *gen)
 	gen->field[i] = 0xFFFFFF;
 }
 
-//void    line(int xy[2], int x1, int y1, t_gen *gen)
-//{
-//    int dx[2];
-//    int sx;
-//    int sy;
-//    int err;
-//    int e2;
-//
-//    dx[0] = abs(x1 - xy[0]);
-//    dx[1] = abs(y1 - xy[1]);
-//    sx = xy[0] < x1 ? 1 : -1;
-//    sy = xy[1] < y1 ? 1 : -1;
-//    err = (dx[0] > dx[1] ? dx[0] : -dx[1]) / 2;
-//    while (1)
-//    {
-//        put_pixel(xy[0], xy[1], gen);
-//        if (xy[0] == x1 && xy[1] == y1)
-//            break;
-//        e2 = err;
-//        if (e2 > -dx[0])
-//            err -= dx[1]; xy[0] += sx;
-//        if (e2 < dx[1])
-//            err += dx[0]; xy[1]+= sy;
-//    }
-//}
-
-void line(int x0, int y0, int x1, int y1, t_gen *gen) {
-
-	int dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
-	int dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
-	int err = (dx>dy ? dx : -dy)/2, e2;
-
-	for(;;){
-		put_pixel(x0,y0, gen);
-		if (x0==x1 && y0==y1) break;
-		e2 = err;
-		if (e2 >-dx) { err -= dy; x0 += sx; }
-		if (e2 < dy) { err += dx; y0 += sy; }
-	}
+static int            ft_incline(t_fdf t1, t_fdf t2)
+{
+    return (fabs(t2.y - t1.y) > fabs(t2.x - t1.x));
 }
 
-void	get_scale(t_gen *gen)
+static void            ft_swap(t_fdf *t1, t_fdf *t2, int i)
 {
-	if (WINDOW_X - gen->max_x > WINDOW_Y - gen->max_y)
-		gen->scale = WINDOW_X / gen->max_x;
-	else
-		gen->scale = WINDOW_Y / gen->max_y;
-	gen->scale = (gen->scale / 100) * SCALE;
-	ft_scale(gen);
+    double    tmp;
+
+    if (i == 1)
+    {
+        tmp = t1->x;
+        t1->x = t1->y;
+        t1->y = tmp;
+        tmp = t2->x;
+        t2->x = t2->y;
+        t2->y = tmp;
+    }
+    else
+    {
+        tmp = t1->x;
+        t1->x = t2->x;
+        t2->x = tmp;
+        tmp = t1->y;
+        t1->y = t2->y;
+        t2->y = tmp;
+        tmp = (double)t1->color;
+        t1->color = t2->color;
+        t2->color = (int)tmp;
+    }
 }
 
-void     ft_scale(t_gen *gen)
+void                line(t_gen *gen, t_fdf t1, t_fdf t2)
 {
-	max_xy(gen);
-	gen->x_temp = ((gen->max_x + gen->min_x) / 2);
-	gen->y_temp = ((gen->max_y + gen->min_y) / 2);
-	while (gen->list)
+    double dx;
+    double dy;
+    double steep;
+    double err;
+    double ystep;
+
+    if ((steep = ft_incline(t1, t2)))
+        ft_swap(&t1, &t2, 1);
+    if (t1.x > t2.x)
+        ft_swap(&t1, &t2, 0);
+    dx = t2.x - t1.x;
+    dy = fabs(t2.y - t1.y);
+    err = dx / 2;
+    ystep = (t1.y < t2.y) ? 1 : -1;
+    while (t1.x++ < t2.x)
+    {
+        put_pixel(steep ? t1.y : t1.x, steep ? t1.x : t1.y, gen);
+        err -= dy;
+        if (err < 0)
+        {
+            t1.y += ystep;
+            err += dx;
+        }
+    }
+}
+
+ void    max_xy(t_gen *gen)
+ {
+	 int i;
+	 int j;
+
+	 i = 0;
+	 gen->min_x = gen->list[0][0].x;
+	 gen->min_y = gen->list[0][0].y;
+	 while (i < gen->w_h)
+	 {
+		 j = 0;
+		 while (j < gen->w_w)
+		 {
+			 if (gen->list[i][j].x > gen->max_x)
+				 gen->max_x = gen->list[i][j].x;
+			 if (gen->list[i][j].y > gen->max_y)
+				 gen->max_y = gen->list[i][j].y;
+			 if (gen->list[i][j].x < gen->min_x)
+				 gen->min_x = gen->list[i][j].x;
+			 if (gen->list[i][j].y < gen->min_y)
+				 gen->min_y = gen->list[i][j].y;
+			 j++;
+		 }
+		 i++;
+	 }
+ }
+
+ void     ft_scale(t_gen *gen)
+ {
+	 int i;
+	 int j;
+
+	 i = 0;
+	 max_xy(gen);
+	 while (i < gen->w_h)
+	 {
+		 j = 0;
+		 while (j < gen->w_w)
+		 {
+			 gen->list[i][j].x *= gen->scale;
+			 gen->list[i][j].y *= gen->scale;
+			 gen->list[i][j].z *= gen->scale;
+			 j++;
+		 }
+		 i++;
+	 }
+ }
+
+ void	get_scale(t_gen *gen)
+ {
+ 	if (WINDOW_X - gen->max_x > WINDOW_Y - gen->max_y)
+ 		gen->scale = WINDOW_X / gen->max_x;
+ 	else
+ 		gen->scale = WINDOW_Y / gen->max_y;
+ 	gen->scale = (gen->scale / 100) * SCALE;
+ 	ft_scale(gen);
+ }
+
+int		array_len(char **ar)
+{
+	int	i;
+
+	i = 0;
+	while (ar[i])
+		i++;
+	return (i);
+}
+
+void	separate_data(t_gen *gen)
+{
+	char	**array;
+	int		i;
+	int		j;
+	int		k;
+
+	array = ft_strsplit(gen->buf, ' ');
+	gen->list = (t_fdf**)malloc(sizeof(t_fdf*) * gen->w_h);
+	i = 0;
+	k = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		gen->list[i] = (t_fdf*)malloc(sizeof(t_fdf) * gen->w_w);
+		while (j < gen->w_w)
 		{
-			gen->list->row->x *= gen->scale;
-			gen->list->row->z *= gen->scale;
-			gen->list->row = gen->list->row->next;
+			gen->list[i][j].x = j;
+			gen->list[i][j].y = i;
+			gen->list[i][j].z = ft_atoi(array[k]);
+			k++;
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list->y *= gen->scale;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
+	gen->max_x = gen->w_w - 1;
+	gen->max_y = gen->w_h - 1;
+
 }
 
-void    max_xy(t_gen *gen)
+void   reader(t_gen *gen, int fd)
 {
-	gen->min_x = gen->list->row->x;
-	gen->min_y = gen->list->y;
-	while (gen->list)
+	char    *line;
+	char    **array;
+
+	get_next_line(fd, &line);
+	gen->buf = ft_strdup(line);
+	array = ft_strsplit(line, ' ');
+	ft_strdel(&line);
+	gen->w_w = array_len(array);
+	gen->w_h = 1;
+	while (get_next_line(fd, &line))
 	{
-		while (gen->list->row)
-		{
-			if (gen->list->row->x > gen->max_x)
-				gen->max_x = gen->list->row->x;
-			gen->list->row = gen->list->row->next;
-		}
-		if (gen->list->y > gen->max_y)
-			gen->max_y = gen->list->y;
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		gen->buf = ft_strjoin(gen->buf, " ");
+		gen->buf = ft_strjoin(gen->buf, line);
+		ft_strdel(&line);
+		gen->w_h++;
 	}
-	gen->list = gen->run;
+	separate_data(gen);
 }
 
 int exit_x(void)
@@ -205,23 +203,89 @@ int exit_x(void)
 	exit(0);
 }
 
-void    clear(t_gen *gen)
+void    print_in_window(t_gen *gen)
 {
-	ft_bzero(gen->field, WINDOW_X * WINDOW_Y * 4);
-	gen->size_line = 0;
-	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+	int	i;
+	int	j;
+
+    gen->field = (int*)mlx_get_data_addr(gen->image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
+	i = 0;
+	while (i < gen->w_h)
+	{
+		j = 0;
+		while (j < gen->w_w)
+		{
+			if (i + 1 < gen->w_h)
+				line(gen, gen->list[i][j], gen->list[i + 1][j]);
+			if (j + 1 < gen->w_w)
+				line(gen, gen->list[i][j], gen->list[i][j + 1]);
+			j++;
+		}
+		i++;
+	}
+    mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+}
+
+// void    centering_zoom(t_gen *gen)
+// {
+// 	double x_center;
+// 	double y_center;
+
+// 	max_xy(gen);
+// 	x_center = gen->x_temp - ((gen->max_x + gen->min_x) / 2);
+// 	y_center = gen->y_temp - ((gen->max_y + gen->min_y) / 2);
+// 	while (gen->list)
+// 	{
+// 		while (gen->list->row)
+// 		{
+// 			gen->list->row->x += x_center;
+// 			gen->list->row = gen->list->row->next;
+// 		}
+// 		gen->list->y += y_center;
+// 		gen->list->row = gen->list->clone;
+// 		gen->list = gen->list->next;
+// 	}
+// 	gen->list = gen->run;
+// }
+
+void	centering(t_gen *gen)
+{
+	int	x;
+	int	y;
+	int i;
+	int j;
+
+	max_xy(gen);
+	x = (WINDOW_X / 2) - ((gen->max_x + gen->min_x) / 2);
+	y = (WINDOW_Y / 2) - ((gen->max_y + gen->min_y) / 2);
+	i = 0;
+	while (i < gen->w_h)
+	 {
+		 j = 0;
+		 while (j < gen->w_w)
+		 {
+			 gen->list[i][j].x += x;
+			 gen->list[i][j].y += y;
+			 j++;
+		 }
+		 i++;
+	 }
 }
 
 int	manage_keys(int key, t_gen *gen)
 {
-	if (key == 6)
-		gen->angle_z = 15;
-	else if (key == 7)
-		gen->angle_x = 15;
-	else if (key == 16)
-		gen->angle_y = 15;
-	else if (key == 53)
+	if (key == 53)
 		exit_x();
+	else if (key == 6)
+		gen->deg_z = 1 * M_PI / 180;
+	else if (key == 7)
+		gen->deg_x = 1 * M_PI / 180;
+	else if (key == 16)
+		gen->deg_y = 1 * M_PI / 180;
+	else if (key == 116)
+		increase(gen, 10);
+	else if (key == 121)
+		increase(gen, -10);
 	else if (key == 123)  //to left
 		move_to_left(gen);
 	else if (key == 124)  // to right
@@ -230,21 +294,17 @@ int	manage_keys(int key, t_gen *gen)
 		move_up(gen);
 	else if (key == 125) // move down
 		move_down(gen);
-	else if (key == 116)
-		increase(gen);
-	else if (key == 121)
-		decrease(gen);
 	else if (key == 69)
 	{
 		gen->scale = 1.1;
 		ft_scale(gen);
-		centering_zoom(gen);
+		//centering_zoom(gen);
 	}
 	else if (key == 78)
 	{
 		gen->scale = 0.9;
 		ft_scale(gen);
-		centering_zoom(gen);
+		//centering_zoom(gen);
 	}
 	rotate_matrix(gen, key);
 	//mlx_clear_window(gen->init, gen->window);
@@ -253,74 +313,28 @@ int	manage_keys(int key, t_gen *gen)
 	return (0);
 }
 
-void    centering_zoom(t_gen *gen)
+void	inicialization(t_gen *gen)
 {
-	double x_center;
-	double y_center;
-
-	max_xy(gen);
-	x_center = gen->x_temp - ((gen->max_x + gen->min_x) / 2);
-	y_center = gen->y_temp - ((gen->max_y + gen->min_y) / 2);
-	while (gen->list)
-	{
-		while (gen->list->row)
-		{
-			gen->list->row->x += x_center;
-			gen->list->row = gen->list->row->next;
-		}
-		gen->list->y += y_center;
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
-	}
-	gen->list = gen->run;
-}
-
-void    centering(t_gen *gen)
-{
-	int x_center;
-	int y_center;
-
-	max_xy(gen);
-	x_center = (WINDOW_X / 2) - ((gen->max_x + gen->min_x) / 2);
-	y_center = (WINDOW_Y / 2) - ((gen->max_y + gen->min_y) / 2);
-	while (gen->list)
-	{
-		while (gen->list->row)
-		{
-			gen->list->row->x += x_center;
-			gen->list->row = gen->list->row->next;
-		}
-		gen->list->y += y_center;
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
-	}
-	gen->list = gen->run;
-}
-
-void    print_in_window(t_gen *gen)
-{
-	int temp[2];
-
-	gen->field = (int*)mlx_get_data_addr(gen->image, &gen->bits_per_pixel, &gen->size_line, &gen->endian);
-	while (gen->list)
-	{
-		while (gen->list->row)
-		{
-			temp[0] = gen->list->row->x;
-			temp[1] = gen->list->y;
-			if (gen->list->row->next)
-				line(temp[0], temp[1], gen->list->row->next->x, gen->list->y, gen);    // horizontal lines
-			else if (gen->list->next)
-				line(gen->list->row->x, gen->list->y, gen->list->row->x, gen->list->next->y, gen); // last vertical line
-			if (gen->list->next)
-				line(temp[0], temp[1], gen->list->row->x, gen->list->next->y, gen);   // vertical lines
-			gen->list->row = gen->list->row->next;
-		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
-	}
-	gen->list = gen->run;
-	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+	gen->max_x = 0;
+	gen->max_y = 0;
+	gen->bits_per_pixel = 0;
+	gen->diff_x = 0;
+	gen->diff_y = 0;
+	gen->endian = 0;
+	gen->image = 0;
+	gen->init = 0;
+	gen->max_x = 0;
+	gen->min_x = 0;
+	gen->max_y = 0;
+	gen->min_y = 0;
+	gen->scale = 0;
+	gen->size_line = 0;
+	gen->w_h = 0;
+	gen->w_w = 0;
+	gen->window = 0;
+	gen->deg_x = 0;
+	gen->deg_y = 0;
+	gen->deg_z = 0;
 }
 
 int main(int argc, char **argv) {
@@ -328,14 +342,8 @@ int main(int argc, char **argv) {
 	int fd;
 
 	argc = 1;
-	gen.max_x = 0;
-	gen.max_y = 0;
-	gen.angle_x = 0;
-	gen.angle_y = 0;
-	gen.angle_z = 0;
-	gen.list = new_list();
-	gen.run = gen.list;
 	argv[1] = "dd";
+	inicialization(&gen);
 	//open(argv[1], O_RDONLY);
 	fd = open("/Users/dlytvyn/FDF/test_maps/42.fdf", O_RDONLY);
 	reader(&gen, fd);

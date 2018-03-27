@@ -4,187 +4,168 @@
 
 #include "fdf.h"
 
-void	increase(t_gen *gen)
+void	increase(t_gen *gen,int a)
 {
-	while (gen->list)
+	int 	i;
+	int		j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			gen->list->row->z += 2;
-			gen->list->row = gen->list->row->next;
+			gen->list[i][j].z += a;
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
 }
 
-void	decrease(t_gen *gen)
+void    rotate_along_x(t_gen *gen)
 {
-	while (gen->list)
+	int 	i;
+	int		j;
+	int		or;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			gen->list->row->z -= 2;
-			gen->list->row = gen->list->row->next;
+			or = gen->list[i][j].y;
+			gen->list[i][j].y = gen->list[i][j].y * cos(gen->deg_x) + gen->list[i][j].z * sin(gen->deg_x);
+			gen->list[i][j].z = -or * sin(gen->deg_x) + gen->list[i][j].z * cos(gen->deg_x);
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
+	gen->deg_x = 0;
 }
 
-
-
-// void    rotate_along_x(t_gen *gen)
-// {
-// 	double	radians;
-// 	int		or;
-
-// 	radians = gen->angle_x * M_PI / 180;
-// 	while (gen->list)
-// 	{
-// 		while (gen->list->row)
-// 		{
-// 			or = gen->list->y;
-// 			gen->list->y = gen->list->y * cos(radians) + gen->list->row->z * sin(radians);
-// 			gen->list->row->z = -or * sin(radians) + gen->list->row->z * cos(radians);
-// 			gen->list->row = gen->list->row->next;
-// 		}
-// 		gen->list->row = gen->list->clone;
-// 		gen->list = gen->list->next;
-// 	}
-// 	gen->list = gen->run;
-// }
-
-// void    rotate_along_y(t_gen *gen)
-// {
-// 	double	radians;
-// 	int		or;
-
-// 	radians = gen->angle_y * M_PI / 180;
-// 	while (gen->list)
-// 	{
-// 		while (gen->list->row)
-// 		{
-// 			or = gen->list->row->x;
-// 			gen->list->row->x = (gen->list->row->x * cos(radians) + gen->list->row->z * sin(radians));
-// 			gen->list->row->z = -or * sin(radians) + gen->list->row->z * cos(radians);
-// 			gen->list->row = gen->list->row->next;
-// 		}
-// 		gen->list->row = gen->list->clone;
-// 		gen->list = gen->list->next;
-// 	}
-// 	gen->list = gen->run;
-// }
-
-// void    rotate_along_z(t_gen *gen)
-// {
-// 	double	radians;
-// 	int		or;
-
-// 	radians = gen->angle_z * M_PI / 180;
-// 	while (gen->list)
-// 	{
-// 		while (gen->list->row)
-// 		{
-// 			or = gen->list->row->x;
-// 			gen->list->row->x = gen->list->row->x * cos(radians) - gen->list->y * sin(radians);
-// 			gen->list->y = or * sin(radians) + gen->list->y * cos(radians);
-// 			gen->list->row = gen->list->row->next;
-// 		}
-// 		gen->list->row = gen->list->clone;
-// 		gen->list = gen->list->next;
-// 	}
-// 	gen->list = gen->run;
-// }
-
-void	rotation(t_gen *gen, int a, int b, int c, int key)
+void    rotate_along_y(t_gen *gen)
 {
-	double	deg;
-	double x;
-	double y;
-	double z;
+	int 	i;
+	int		j;
+	int		or;
 
-	if (key == 6)
-		deg = gen->angle_z * M_PI / 180;
-	else if (key == 7)
-		deg = gen->angle_x * M_PI / 180;
-	else if (key == 16)
-		deg = gen->angle_y * M_PI / 180;
-	while (gen->list)
+	i = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			 printf("Before x: %f\n", gen->list->row->x);
-			 printf("Before y: %f\n", gen->list->y); 
-			 printf("Before z: %f\n", gen->list->row->z);
-			x = gen->list->row->x;
-        	y = gen->list->y;
-        	z = gen->list->row->z;
-        	gen->list->row->x = x * (cos(deg) + (1 - cos(deg)) * a * a) + y * ((1 - cos(deg)) * a * b + sin(deg) * c) + z * ((1 - cos(deg)) * a * c - sin(deg) * b);
-        	gen->list->y = x * ((1 - cos(deg)) * a * b  - sin(deg) * c) + y * (cos(deg) + (1 - cos(deg)) * b * b) + z * ((1 - cos(deg)) * b * c + sin(deg) * a);
-        	gen->list->row->z = x * ((1 - cos(deg)) * a * c + sin(deg) * b) + y * ((1 - cos(deg)) * b * c - sin(deg) * a) + z * ((1 - cos(deg)) * c * c + cos(deg));
-			printf("After x: %f\n", gen->list->row->x);
-			printf("After y: %f\n", gen->list->y);
-			printf("After z: %f\n", gen->list->row->z);
-			gen->list->row = gen->list->row->next;
+			or = gen->list[i][j].x;
+			gen->list[i][j].x = (gen->list[i][j].x * cos(gen->deg_y) + gen->list[i][j].z * sin(gen->deg_y));
+			gen->list[i][j].z = -or * sin(gen->deg_y) + gen->list[i][j].z * cos(gen->deg_y);
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
+	gen->deg_y = 0;
 }
+
+void    rotate_along_z(t_gen *gen)
+{
+	int 	i;
+	int		j;
+	int		or;
+
+	i = 0;
+	while (i < gen->w_h)
+	{
+		j = 0;
+		while (j < gen->w_w)
+		{
+			or = gen->list[i][j].x;
+			gen->list[i][j].x = gen->list[i][j].x * cos(gen->deg_z) - gen->list[i][j].y * sin(gen->deg_z);
+			gen->list[i][j].y = or * sin(gen->deg_z) + gen->list[i][j].y * cos(gen->deg_z);
+			j++;
+		}
+		i++;
+	}
+	gen->deg_z = 0;
+}
+
+// void	rotation(t_gen *gen, int a, int b, int c)
+// {
+// 	double 	x;
+// 	double 	y;
+// 	double 	z;
+// 	int		i;
+// 	int		j;
+
+// 	i = 0;
+// 	while (i < gen->w_h)
+// 	{
+// 		j = 0;
+// 		while (j < gen->w_w)
+// 		{
+// 			x = gen->list[i][j].x;
+//         	y = gen->list[i][j].y;
+//         	z = gen->list[i][j].z;
+//         	gen->list[i][j].x = x * (cos(gen->deg) + (1 - cos(gen->deg)) * a * a) + y * ((1 - cos(gen->deg)) * a * b + sin(gen->deg) * c) + z * ((1 - cos(gen->deg)) * a * c - sin(gen->deg) * b);
+//         	gen->list[i][j].y = x * ((1 - cos(gen->deg)) * a * b  - sin(gen->deg) * c) + y * (cos(gen->deg) + (1 - cos(gen->deg)) * b * b) + z * ((1 - cos(gen->deg)) * b * c + sin(gen->deg) * a);
+//         	gen->list[i][j].z = x * ((1 - cos(gen->deg)) * a * c + sin(gen->deg) * b) + y * ((1 - cos(gen->deg)) * b * c - sin(gen->deg) * a) + z * ((1 - cos(gen->deg)) * c * c + cos(gen->deg));
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	minus_coor(t_gen *gen)
 {
-	gen->diff_x = gen->list->row->x;
-	gen->diff_y = gen->list->y;
-	while (gen->list)
-	{
-		while (gen->list->row)
-		{
-			gen->list->row->x -= gen->diff_x;
-			gen->list->row = gen->list->row->next;
-		}
-		gen->list->y -= gen->diff_y;
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
-	}
-	gen->list = gen->run;
+	int i;
+	int j;
+	max_xy(gen);
+	gen->diff_x = (gen->max_x + gen->min_x) / 2; 
+	gen->diff_y = (gen->max_y + gen->min_y) / 2;
+	i = 0;
+	while (i < gen->w_h)
+	 {
+		 j = 0;
+		 while (j < gen->w_w)
+		 {
+			 gen->list[i][j].x -= gen->diff_x;
+			 gen->list[i][j].y -= gen->diff_y;
+			 j++;
+		 }
+		 i++;
+	 }
 }
 
 void	plus_coor(t_gen *gen)
 {
-	gen->diff_x = gen->list->row->x;
-	gen->diff_y = gen->list->y;
-	while (gen->list)
+	int i;
+	int j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		//printf("ffffffffffff\n");
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			gen->list->row->x += gen->diff_x;
-			gen->list->row = gen->list->row->next;
+			gen->list[i][j].x += gen->diff_x;
+			gen->list[i][j].y += gen->diff_y;
+			j++;
 		}
-		gen->list->y += gen->diff_y;
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
 }
 
 void    rotate_matrix(t_gen *gen, int key)
 {
-	if (key == 7 || key == 16 || key == 6)
+	if (key == 7 || key == 16 || key == 6 || key == 116 || key == 121)
 	{
-		//minus_coor(gen);
-		if (key == 7)
-			rotation(gen, 1, 0 , 0, key);
-		else if (key == 16)
-			rotation(gen, 0, 1, 0, key);
-		else if (key == 6)
-			rotation(gen, 0, 0, 1, key);
-		//plus_coor(gen);
+		minus_coor(gen);
+		// rotation(gen, 1, 0 , 0);
+		// rotation(gen, 0, 1, 0);
+		// rotation(gen, 0, 0, 1);
+		rotate_along_x(gen);
+		rotate_along_y(gen);
+		rotate_along_z(gen);
+		plus_coor(gen);
 	}
 	//centering(gen);
 }

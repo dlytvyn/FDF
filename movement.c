@@ -6,50 +6,72 @@
 
 void    move_to_right(t_gen *gen)
 {
-	while (gen->list)
+	int i;
+	int j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			gen->list->row->x += 7;
-			gen->list->row = gen->list->row->next;
+			gen->list[i][j].x += 12;
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
 }
 
 void    move_to_left(t_gen *gen)
 {
-	while (gen->list)
+	int i;
+	int j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		while (gen->list->row)
+		j = 0;
+		while (j < gen->w_w)
 		{
-			gen->list->row->x -=7;
-			gen->list->row = gen->list->row->next;
+			gen->list[i][j].x -= 12;
+			j++;
 		}
-		gen->list->row = gen->list->clone;
-		gen->list = gen->list->next;
+		i++;
 	}
-	gen->list = gen->run;
 }
 
 void    move_up(t_gen *gen)
 {
-	while (gen->list)
+	int i;
+	int j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		gen->list->y -= 7;
-		gen->list = gen->list->next;
+		j = 0;
+		while (j < gen->w_w)
+		{
+			gen->list[i][j].y -= 12;
+			j++;
+		}
+		i++;
 	}
-	gen->list = gen->run;
 }
 
 void    move_down(t_gen *gen)
 {
-	while (gen->list)
+	int i;
+	int j;
+
+	i = 0;
+	while (i < gen->w_h)
 	{
-		gen->list->y += 7;
-		gen->list = gen->list->next;
+		j = 0;
+		while (j < gen->w_w)
+		{
+			gen->list[i][j].y += 12;
+			j++;
+		}
+		i++;
 	}
-	gen->list = gen->run;
 }
