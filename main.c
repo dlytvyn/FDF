@@ -112,7 +112,6 @@ void                line(t_gen *gen, t_fdf t1, t_fdf t2)
 	 int j;
 
 	 i = 0;
-	 max_xy(gen);
 	 while (i < gen->w_h)
 	 {
 		 j = 0;
@@ -230,22 +229,22 @@ void    print_in_window(t_gen *gen)
 // {
 // 	double x_center;
 // 	double y_center;
+// 	int		i;
+// 	int		j;
 
 // 	max_xy(gen);
-// 	x_center = gen->x_temp - ((gen->max_x + gen->min_x) / 2);
-// 	y_center = gen->y_temp - ((gen->max_y + gen->min_y) / 2);
-// 	while (gen->list)
+// 	i = 0;
+// 	while (i < gen->w_h)
 // 	{
-// 		while (gen->list->row)
+// 		j = 0;
+// 		while (j < gen->w_w)
 // 		{
-// 			gen->list->row->x += x_center;
-// 			gen->list->row = gen->list->row->next;
+// 			gen->list[i][j].x += x_center;
+// 			gen->list[i][j].y += y_center;
+// 			j++;
 // 		}
-// 		gen->list->y += y_center;
-// 		gen->list->row = gen->list->clone;
-// 		gen->list = gen->list->next;
+// 		i++;
 // 	}
-// 	gen->list = gen->run;
 // }
 
 void	centering(t_gen *gen)
@@ -278,10 +277,16 @@ int	manage_keys(int key, t_gen *gen)
 		exit_x();
 	else if (key == 6)
 		gen->deg_z = 1 * M_PI / 180;
+	else if (key == 0)
+		gen->deg_z = -1 * M_PI / 180;
 	else if (key == 7)
 		gen->deg_x = 1 * M_PI / 180;
+	else if (key == 8)
+		gen->deg_x = -1 * M_PI / 180;
 	else if (key == 16)
 		gen->deg_y = 1 * M_PI / 180;
+	else if (key == 17)
+		gen->deg_y = -1 * M_PI / 180;
 	else if (key == 116)
 		increase(gen, 10);
 	else if (key == 121)
@@ -297,14 +302,16 @@ int	manage_keys(int key, t_gen *gen)
 	else if (key == 69)
 	{
 		gen->scale = 1.1;
+		minus_coor(gen);
 		ft_scale(gen);
-		//centering_zoom(gen);
+		plus_coor(gen);
 	}
 	else if (key == 78)
 	{
 		gen->scale = 0.9;
+		minus_coor(gen);
 		ft_scale(gen);
-		//centering_zoom(gen);
+		plus_coor(gen);
 	}
 	rotate_matrix(gen, key);
 	//mlx_clear_window(gen->init, gen->window);

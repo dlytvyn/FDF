@@ -53,4 +53,6 @@ void    ft_scale(t_gen *gen);
 void    max_xy(t_gen *gen);
 void    rotate_matrix(t_gen *gen, int key);
 void	increase(t_gen *gen,int a);
+void	plus_coor(t_gen *gen);
+void	minus_coor(t_gen *gen);
 //void    centering_zoom(t_gen *gen);

@@ -88,39 +88,13 @@ void    rotate_along_z(t_gen *gen)
 	gen->deg_z = 0;
 }
 
-// void	rotation(t_gen *gen, int a, int b, int c)
-// {
-// 	double 	x;
-// 	double 	y;
-// 	double 	z;
-// 	int		i;
-// 	int		j;
-
-// 	i = 0;
-// 	while (i < gen->w_h)
-// 	{
-// 		j = 0;
-// 		while (j < gen->w_w)
-// 		{
-// 			x = gen->list[i][j].x;
-//         	y = gen->list[i][j].y;
-//         	z = gen->list[i][j].z;
-//         	gen->list[i][j].x = x * (cos(gen->deg) + (1 - cos(gen->deg)) * a * a) + y * ((1 - cos(gen->deg)) * a * b + sin(gen->deg) * c) + z * ((1 - cos(gen->deg)) * a * c - sin(gen->deg) * b);
-//         	gen->list[i][j].y = x * ((1 - cos(gen->deg)) * a * b  - sin(gen->deg) * c) + y * (cos(gen->deg) + (1 - cos(gen->deg)) * b * b) + z * ((1 - cos(gen->deg)) * b * c + sin(gen->deg) * a);
-//         	gen->list[i][j].z = x * ((1 - cos(gen->deg)) * a * c + sin(gen->deg) * b) + y * ((1 - cos(gen->deg)) * b * c - sin(gen->deg) * a) + z * ((1 - cos(gen->deg)) * c * c + cos(gen->deg));
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
 void	minus_coor(t_gen *gen)
 {
 	int i;
 	int j;
 	max_xy(gen);
-	gen->diff_x = (gen->max_x + gen->min_x) / 2; 
-	gen->diff_y = (gen->max_y + gen->min_y) / 2;
+	gen->diff_x = gen->list[gen->w_h/2][gen->w_w/2].x;
+	gen->diff_y = gen->list[gen->w_h/2][gen->w_w/2].y;
 	i = 0;
 	while (i < gen->w_h)
 	 {
@@ -156,16 +130,12 @@ void	plus_coor(t_gen *gen)
 
 void    rotate_matrix(t_gen *gen, int key)
 {
-	if (key == 7 || key == 16 || key == 6 || key == 116 || key == 121)
+	if (key == 7 || key == 16 || key == 6 || key == 116 || key == 121 || key == 0 || key == 8 || key == 17)
 	{
 		minus_coor(gen);
-		// rotation(gen, 1, 0 , 0);
-		// rotation(gen, 0, 1, 0);
-		// rotation(gen, 0, 0, 1);
 		rotate_along_x(gen);
 		rotate_along_y(gen);
 		rotate_along_z(gen);
 		plus_coor(gen);
 	}
-	//centering(gen);
 }
