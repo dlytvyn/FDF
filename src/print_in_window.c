@@ -33,6 +33,6 @@ void	print_in_window(t_gen *gen)
 		}
 		i++;
 	}
-	mlx_string_put(gen->init, gen->window, 100, 100, 16777215, "Welcome to FDF");
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
+	show_str(gen);
 }

@@ -16,7 +16,7 @@ static	void	put_pixel(int x, int y, t_gen *gen, int color)
 {
 	int i;
 
-	if (x >= gen->size_line / 4 || x < 0 || y < 0)
+	if (x >= gen->size_line / 4 || x < 0 || y < 0 || y > 1000)
 		return ;
 	i = (x + (y * (gen->size_line / 4)));
 	gen->field[i] = color;

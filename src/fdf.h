@@ -22,7 +22,7 @@
 
 # define WINDOW_X 1500
 # define WINDOW_Y 1000
-# define SCALE 60
+# define SCALE 50
 
 typedef struct		s_fdf
 {
@@ -56,6 +56,7 @@ typedef struct		s_gen
 	double			deg_x;
 	double			deg_y;
 	double			deg_z;
+	int				flag;
 }					t_gen;
 
 void				line(t_gen *gen, t_fdf t1, t_fdf t2);
@@ -80,8 +81,9 @@ void				print_in_window(t_gen *gen);
 void				reader(t_gen *gen, int fd);
 void				get_scale(t_gen *gen);
 void				ft_scale(t_gen *gen);
-int					exit_x(void);
+int					exit_x(t_gen *gen);
 void				clear(t_gen *gen);
 int					ft_printf(const char *format, ...);
+void				show_str(t_gen *gen);
 
 #endif

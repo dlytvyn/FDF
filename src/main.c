@@ -19,8 +19,22 @@ void	clear(t_gen *gen)
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 }
 
-int		exit_x(void)
+void	free_struct(t_gen *gen)
 {
+	int i;
+
+	i = 0;
+	while (i < gen->w_h)
+	{
+		free(gen->list[i]);
+		i++;
+	}
+	free(gen->list);
+}
+
+int		exit_x(t_gen *gen)
+{
+	free_struct(gen);
 	exit(0);
 }
 
@@ -43,9 +57,10 @@ void	inicialization(t_gen *gen)
 	gen->w_h = 0;
 	gen->w_w = 0;
 	gen->window = 0;
-	gen->deg_x = 0;
-	gen->deg_y = 0;
-	gen->deg_z = 0;
+	gen->deg_x = -35 * M_PI / 180;
+	gen->deg_y = -40 * M_PI / 180;
+	gen->deg_z = 25 * M_PI / 180;
+	gen->flag = 0;
 }
 
 int		main(int argc, char **argv)
@@ -65,6 +80,7 @@ int		main(int argc, char **argv)
 	gen.init = mlx_init();
 	gen.window = mlx_new_window(gen.init, WINDOW_X, WINDOW_Y, "FDF Project!");
 	gen.image = mlx_new_image(gen.init, WINDOW_X, WINDOW_Y);
+	rotate_matrix(&gen, 0);
 	centering(&gen);
 	print_in_window(&gen);
 	mlx_hook(gen.window, 2, 5, manage_keys, &gen);
