@@ -12,14 +12,14 @@
 
 #include "fdf.h"
 
-void	clear(t_gen *gen)
+void			clear(t_gen *gen)
 {
 	ft_bzero(gen->field, WINDOW_X * WINDOW_Y * 4);
 	gen->size_line = 0;
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 }
 
-void	free_struct(t_gen *gen)
+static	void	free_struct(t_gen *gen)
 {
 	int i;
 
@@ -32,13 +32,13 @@ void	free_struct(t_gen *gen)
 	free(gen->list);
 }
 
-int		exit_x(t_gen *gen)
+int				exit_x(t_gen *gen)
 {
 	free_struct(gen);
 	exit(0);
 }
 
-void	inicialization(t_gen *gen)
+void			inicialization(t_gen *gen)
 {
 	gen->max_x = 0;
 	gen->max_y = 0;
@@ -63,7 +63,7 @@ void	inicialization(t_gen *gen)
 	gen->flag = 0;
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_gen	gen;
 	int		fd;
