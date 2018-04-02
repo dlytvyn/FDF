@@ -83,7 +83,7 @@ void				print_in_window(t_gen *gen);
 void				reader(t_gen *gen, int fd);
 void				get_scale(t_gen *gen);
 void				ft_scale(t_gen *gen);
-int					exit_x(t_gen *gen);
+int					exit_x(t_gen *gen, int in);
 void				clear(t_gen *gen);
 int					ft_printf(const char *format, ...);
 void				show_str(t_gen *gen);

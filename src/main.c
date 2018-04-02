@@ -48,10 +48,13 @@ void			free_array(char **array)
 
 }
 
-int				exit_x(t_gen *gen)
+int				exit_x(t_gen *gen, int in)
 {
-	free_array(gen->array);
-	free_struct(gen);
+	if (in == 1)
+	{
+		free_array(gen->array);
+		free_struct(gen);
+	}
 	system("leaks fdf");
 	exit(0);
 }
@@ -90,7 +93,7 @@ int				main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_printf("{green}%s{reset}\n", "Usage: ./fdf <target file>");
-		exit_x(&gen);
+		exit_x(&gen, 0);
 	}
 	inicialization(&gen);
 	fd = open(argv[1], O_RDONLY);

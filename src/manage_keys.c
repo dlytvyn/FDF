@@ -14,6 +14,8 @@
 
 void			show_str(t_gen *gen)
 {
+	mlx_string_put(gen->init, gen->window, 1300, 970, 0x00FF00,
+		"MADE BY: DLYTVYN");
 	if (!gen->flag)
 		mlx_string_put(gen->init, gen->window, 20, 20, 0x00FF00,
 			"Press Enter to see useful buttons!");
@@ -110,11 +112,10 @@ void            change_color(t_gen *gen, int key)
 		gen->color_index = 0;
 }
 
-
 int				manage_keys(int key, t_gen *gen)
 {
 	if (key == 53)
-		exit_x(gen);
+		exit_x(gen, 1);
 	else if (key == 6)
 		gen->deg_z = 1 * M_PI / 180;
 	else if (key == 0)

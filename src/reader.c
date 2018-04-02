@@ -65,12 +65,12 @@ static	void	separate_data(t_gen *gen)
 	if (gen->w_h * gen->w_w != array_len(gen->array))
 	{
 		ft_printf("{red}%s{reset}\n", "Found wrong line length. Exiting.");
-		exit_x(gen);
+		exit_x(gen, 1);
 	}
 	else if (array_len(gen->array) == 0)
 	{
 		ft_printf("{red}%s{reset}\n", "Error! No map found!");
-		exit_x(gen);
+		exit_x(gen, 1);
 	}
 	separate_add(gen);
 	gen->max_x = gen->w_w - 1;
@@ -86,7 +86,7 @@ void			reader(t_gen *gen, int fd)
 	if (get_next_line(fd, &line) == -1)
 	{
 		ft_printf("{red}%s{reset}\n", "Error! There is no file!");
-		exit_x(gen);
+		exit_x(gen, 0);
 	}
 	gen->buf = ft_strdup(line);
 	array = ft_strsplit(line, ' ');
