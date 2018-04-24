@@ -23,13 +23,9 @@ static	void	add(int i, int j, int k, t_gen *gen)
 			l++;
 		l++;
 		gen->list[i][j].color = ft_atoi_base(gen->array[k] + l, 16);
-		gen->list[i][j].in = 1;
 	}
 	else
-	{
 		gen->list[i][j].color = 16449536;
-		gen->list[i][j].in = 0;
-	}
 }
 
 static	void	separate_add(t_gen *gen)
@@ -65,12 +61,12 @@ static	void	separate_data(t_gen *gen)
 	if (gen->w_h * gen->w_w != array_len(gen->array))
 	{
 		ft_printf("{red}%s{reset}\n", "Found wrong line length. Exiting.");
-		exit_x(gen, 1);
+		exit(0);
 	}
 	else if (array_len(gen->array) == 0)
 	{
-		ft_printf("{red}%s{reset}\n", "Error! No map found!");
-		exit_x(gen, 1);
+		ft_printf("{red}%s{reset}\n", "Error! There is no map!");
+		exit(0);
 	}
 	separate_add(gen);
 	gen->max_x = gen->w_w - 1;
@@ -79,30 +75,23 @@ static	void	separate_data(t_gen *gen)
 
 void			reader(t_gen *gen, int fd)
 {
-	char    *tmp;
 	char	*line;
 	char	**array;
 
 	if (get_next_line(fd, &line) == -1)
 	{
 		ft_printf("{red}%s{reset}\n", "Error! There is no file!");
-		exit_x(gen, 0);
+		exit(0);
 	}
 	gen->buf = ft_strdup(line);
 	array = ft_strsplit(line, ' ');
 	ft_strdel(&line);
 	gen->w_w = array_len(array);
-	free_array(array);
+	gen->w_h = 1;
 	while (get_next_line(fd, &line))
 	{
-		tmp = ft_strdup(gen->buf);
-		ft_strdel(&gen->buf);
-		gen->buf = ft_strjoin(tmp , " ");
-		ft_strdel(&tmp);
-		tmp = ft_strdup(gen->buf);
-		ft_strdel(&gen->buf);
-		gen->buf = ft_strjoin(tmp, line);
-		ft_strdel(&tmp);
+		gen->buf = ft_strjoin(gen->buf, " ");
+		gen->buf = ft_strjoin(gen->buf, line);
 		ft_strdel(&line);
 		gen->w_h++;
 	}

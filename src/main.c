@@ -30,32 +30,11 @@ static	void	free_struct(t_gen *gen)
 		i++;
 	}
 	free(gen->list);
-	gen->list = NULL;
 }
 
-void			free_array(char **array)
+int				exit_x(t_gen *gen)
 {
-	int i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-	array = NULL;
-
-}
-
-int				exit_x(t_gen *gen, int in)
-{
-	if (in == 1)
-	{
-		free_array(gen->array);
-		free_struct(gen);
-	}
-	system("leaks fdf");
+	free_struct(gen);
 	exit(0);
 }
 
@@ -75,14 +54,13 @@ void			inicialization(t_gen *gen)
 	gen->min_y = 0;
 	gen->scale = 0;
 	gen->size_line = 0;
-	gen->w_h = 1;
+	gen->w_h = 0;
 	gen->w_w = 0;
 	gen->window = 0;
 	gen->deg_x = -35 * M_PI / 180;
 	gen->deg_y = -40 * M_PI / 180;
 	gen->deg_z = 25 * M_PI / 180;
 	gen->flag = 0;
-	gen->color_index = 0;
 }
 
 int				main(int argc, char **argv)
@@ -93,7 +71,7 @@ int				main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_printf("{green}%s{reset}\n", "Usage: ./fdf <target file>");
-		exit_x(&gen, 0);
+		exit_x(&gen);
 	}
 	inicialization(&gen);
 	fd = open(argv[1], O_RDONLY);
