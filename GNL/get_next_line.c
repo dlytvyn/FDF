@@ -3,111 +3,117 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlytvyn <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: oshvorak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/07 13:20:19 by dlytvyn           #+#    #+#             */
-/*   Updated: 2017/12/13 15:48:56 by dlytvyn          ###   ########.fr       */
+/*   Created: 2017/12/07 13:11:55 by oshvorak          #+#    #+#             */
+/*   Updated: 2017/12/07 14:05:30 by oshvorak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static	void	*ft_realloc(void *array, size_t size)
+static t_gnl_list	*ft_gnl_list_new(int fd)
 {
-	char	*res;
+	t_gnl_list *list;
 
-	if (!(res = (char*)malloc(sizeof(char) * (size + 1))))
+	if (!(list = (t_gnl_list*)malloc(sizeof(t_gnl_list))))
 		return (NULL);
-	if (array)
-	{
-		ft_strcpy(res, array);
-		free(array);
-	}
-	return (res);
+	list->fd = fd;
+	list->start_i = 0;
+	list->buff = NULL;
+	list->end_line = 0;
+	list->next = NULL;
+	return (list);
 }
 
-static	char	*ft_change(t_list *run, int i)
+static char			*ft_realloc(char *str, int size)
 {
-	char	*temp;
+	char *nstr;
 
-	if (((char*)run->content)[i])
+	if (!(nstr = ft_strnew(size + 1)))
+		return (NULL);
+	if (str)
 	{
-		temp = (char*)malloc(sizeof(char) * ft_strlen(run->content + i));
+		ft_memcpy(nstr, str, size);
+		ft_strdel(&str);
 	}
-	else
-		return (ft_strdup("\0"));
-	ft_strcpy(temp, run->content + ++i);
-	if (run->content)
-		ft_bzero(run->content, ft_strlen(run->content));
-	ft_strdel((char**)&run->content);
-	run->content = (char*)malloc(sizeof(char) * ft_strlen(temp) + 1);
-	ft_strcpy(run->content, temp);
-	ft_strdel(&temp);
-	return (run->content);
+	return (nstr);
 }
 
-static	int		is_text(t_list *run, char **line, int ret)
+static char			*ft_rfile(int fd, t_gnl_list *elem, char *str)
 {
-	int	i;
+	int		i;
+	int		r;
+	int		size;
+	char	buf[BUFF_SIZE + 1];
 
-	i = 0;
-	while (((char*)run->content)[i] && ((char*)run->content)[i] != '\n')
-		i++;
-	if (((char*)run->content)[i] == '\n' || ret == 0)
+	while (!(elem->end_line) && (r = read(fd, buf, BUFF_SIZE)))
 	{
-		*line = ft_strnew(i);
-		ft_strncpy(*line, run->content, i);
-		run->content = ft_change(run, i);
-		return (1);
-	}
-	else
-		return (0);
-}
-
-static	t_list	*search_in_list(t_list *head, int fd)
-{
-	t_list	*run;
-
-	run = head;
-	while (run)
-	{
-		if ((int)run->content_size == fd)
+		i = 0;
+		buf[r] = '\0';
+		size = (str) ? (int)ft_strlen(str) : 0;
+		while (buf[i])
 		{
-			return (run);
+			if (buf[i] == '\n')
+			{
+				(r - i - 1) ? elem->buff = ft_strsub(buf, i + 1, r - i - 1) : 0;
+				elem->end_line = 1;
+				(!str) ? str = ft_strnew(0) : 0;
+				break ;
+			}
+			str = ft_realloc(str, size + i);
+			str[size + i] = buf[i];
+			i++;
 		}
-		run = run->next;
 	}
-	while (head->next)
-		head = head->next;
-	head->next = ft_lstnew("\0", fd);
-	return (head->next);
+	return (str);
 }
 
-int				get_next_line(const int fd, char **line)
+static char			*ft_rbuf(t_gnl_list *elem, char *line)
 {
-	static t_list	*head;
-	t_list			*run;
-	int				ret;
-	char			buf[BUFF_SIZE + 1];
+	int i;
 
-	if (fd < 0 || !line || read(fd, buf, 0) < 0 || BUFF_SIZE < 0)
-		return (-1);
-	*line = NULL;
-	if (!head)
-		head = ft_lstnew("\0", fd);
-	run = head;
-	run = search_in_list(head, fd);
-	if (((char*)run->content)[0] != '\0' && is_text(run, line, 1) == 1)
-		return (1);
-	while ((ret = read(fd, buf, BUFF_SIZE)))
+	i = elem->start_i;
+	while (elem->buff[i] != '\n' && elem->buff[i])
+		i++;
+	if (i - elem->start_i || elem->buff[i] != '\0')
+		line = ft_strsub(elem->buff, elem->start_i, i - elem->start_i);
+	if (!(elem->buff[i]))
 	{
-		buf[ret] = '\0';
-		run->content = ft_realloc(run->content, ft_strlen(run->content) + ret);
-		run->content = ft_strcat(run->content, buf);
-		if (is_text(run, line, ret) == 1)
-			return (1);
+		ft_strdel(&(elem->buff));
+		elem->start_i = 0;
 	}
-	if (ret == 0)
-		is_text(run, line, ret);
-	return ((*line && *line[0]) ? 1 : 0);
+	else
+	{
+		elem->start_i = ++i;
+		elem->end_line = 1;
+	}
+	return (line);
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_gnl_list	*list;
+	t_gnl_list			*head;
+
+	if (fd < 0 || !line || (read(fd, NULL, 0) == -1))
+		return (-1);
+	if (!(list))
+		list = ft_gnl_list_new(fd);
+	head = list;
+	while (list->fd != fd && list->next)
+		list = list->next;
+	if (list->fd != fd)
+	{
+		list->next = ft_gnl_list_new(fd);
+		list = list->next;
+	}
+	*line = NULL;
+	(list->buff) ? *line = ft_rbuf(list, *line) : 0;
+	(!list->end_line) ? *line = ft_rfile(fd, list, *line) : 0;
+	list->end_line = 0;
+	list = head;
+	if (!*line)
+		return (0);
+	return (1);
 }
