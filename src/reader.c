@@ -77,17 +77,20 @@ static	void	separate_data(t_gen *gen)
 	gen->max_y = gen->w_h - 1;
 }
 
+static	void	go_out(void)
+{
+	ft_printf("{red}%s{reset}\n", "Error! There is no file!");
+	exit(0);
+}
+
 void			reader(t_gen *gen, int fd)
 {
-	char    *tmp;
+	char	*tmp;
 	char	*line;
 	char	**array;
 
 	if (get_next_line(fd, &line) == -1)
-	{
-		ft_printf("{red}%s{reset}\n", "Error! There is no file!");
-		exit_x(gen);
-	}
+		go_out();
 	gen->buf = ft_strdup(line);
 	array = ft_strsplit(line, ' ');
 	ft_strdel(&line);
@@ -97,7 +100,7 @@ void			reader(t_gen *gen, int fd)
 	{
 		tmp = ft_strdup(gen->buf);
 		ft_strdel(&gen->buf);
-		gen->buf = ft_strjoin(tmp , " ");
+		gen->buf = ft_strjoin(tmp, " ");
 		ft_strdel(&tmp);
 		tmp = ft_strdup(gen->buf);
 		ft_strdel(&gen->buf);

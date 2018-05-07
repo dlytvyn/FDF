@@ -19,43 +19,6 @@ void			clear(t_gen *gen)
 	mlx_put_image_to_window(gen->init, gen->window, gen->image, 0, 0);
 }
 
-static	void	free_struct(t_gen *gen)
-{
-	int i;
-
-	i = 0;
-	while (i < gen->w_h)
-	{
-		free(gen->list[i]);
-		i++;
-	}
-	free(gen->list);
-	gen->list = NULL;
-}
-
-void			free_array(char **array)
-{
-	int i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-	array = NULL;
-
-}
-
-int				exit_x(t_gen *gen)
-{
-	free_array(gen->array);
-	free_struct(gen);
-	system("leaks fdf");
-	exit(0);
-}
-
 void			inicialization(t_gen *gen)
 {
 	gen->max_x = 0;
@@ -90,7 +53,7 @@ int				main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_printf("{green}%s{reset}\n", "Usage: ./fdf <target file>");
-		exit_x(&gen);
+		exit(0);
 	}
 	inicialization(&gen);
 	fd = open(argv[1], O_RDONLY);

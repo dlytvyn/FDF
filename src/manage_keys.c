@@ -30,9 +30,9 @@ void			show_str(t_gen *gen)
 		mlx_string_put(gen->init, gen->window, 20, 100, 0x0000FF,
 			"Movement: arrows");
 		mlx_string_put(gen->init, gen->window, 20, 120, 0x0000FF,
-		               "Change default colors: W");
+			"Change default colors: W");
 		mlx_string_put(gen->init, gen->window, 20, 140, 0x0000FF,
-		               "Change all colors: E");
+			"Change all colors: E");
 		mlx_string_put(gen->init, gen->window, 20, 160, 0x0000FF,
 			"Hide this menu: Q");
 		mlx_string_put(gen->init, gen->window, 20, 180, 0x0000FF, "Exit: Esc");
@@ -64,7 +64,7 @@ static	void	manage_add(int key, t_gen *gen)
 		gen->flag = 0;
 }
 
-void            cycle(t_gen *gen, int color, int key)
+void			cycle(t_gen *gen, int color, int key)
 {
 	int i;
 	int j;
@@ -75,7 +75,7 @@ void            cycle(t_gen *gen, int color, int key)
 		j = 0;
 		while (j < gen->w_w)
 		{
-			if (gen->list[i][j].in  == 0 && key == 13)
+			if (gen->list[i][j].in == 0 && key == 13)
 				gen->list[i][j].color = color;
 			else if (key == 14)
 				gen->list[i][j].color = color;
@@ -85,7 +85,7 @@ void            cycle(t_gen *gen, int color, int key)
 	}
 }
 
-void            change_color(t_gen *gen, int key)
+void			change_color(t_gen *gen, int key)
 {
 	if (gen->color_index == 0)
 		cycle(gen, 16318208, key);
@@ -109,7 +109,6 @@ void            change_color(t_gen *gen, int key)
 	if (gen->color_index > 8)
 		gen->color_index = 0;
 }
-
 
 int				manage_keys(int key, t_gen *gen)
 {

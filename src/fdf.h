@@ -17,8 +17,7 @@
 # include <mlx.h>
 # include <fcntl.h>
 # include <stdlib.h>
-# include "../libft/libft.h"
-# include "../GNL/get_next_line.h"
+# include "../ft_printf/libft/libft.h"
 
 # define WINDOW_X 1500
 # define WINDOW_Y 1000
@@ -30,7 +29,7 @@ typedef struct		s_fdf
 	double			z;
 	double			y;
 	int				color;
-	int             in;
+	int				in;
 }					t_fdf;
 
 typedef struct		s_gen
@@ -58,7 +57,7 @@ typedef struct		s_gen
 	double			deg_y;
 	double			deg_z;
 	int				flag;
-	int             color_index;
+	int				color_index;
 }					t_gen;
 
 void				line(t_gen *gen, t_fdf t1, t_fdf t2);
@@ -87,6 +86,7 @@ int					exit_x(t_gen *gen);
 void				clear(t_gen *gen);
 int					ft_printf(const char *format, ...);
 void				show_str(t_gen *gen);
+void				free_struct(t_gen *gen);
 void				free_array(char **array);
 
 #endif

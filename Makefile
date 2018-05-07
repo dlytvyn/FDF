@@ -1,10 +1,10 @@
 NAME = fdf
-LIBFT = ./libft/libft.a
-FT_PRINTF = ./ft_printf/libftprintf.a
-GNL = ./GNL/get_next_line.c
+FT_PRINTF = libftprintf.a
+PATH_INC = ./src/fdf.h
 CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror -Iincludes -lmlx -framework OpenGL -framework AppKit
+CFLAGS = -Wall -Wextra -Werror 
+BON_FL = -lmlx -framework OpenGL -framework AppKit
+HEAD = ./src/fdf.h
 
 FDF =		./src/main.c\
 			./src/bresenham.c\
@@ -20,26 +20,23 @@ FDF =		./src/main.c\
 			./src/print_in_window.c\
 			./src/reader.c\
 			./src/scale.c\
+			./src/exit_x.c\
 
 FDF_OBJ = $(FDF:.c=.o)
 
 all: $(NAME)
 
-$(NAME):
-	cd libft && make && cp libft.a ../
+$(NAME): $(FDF_OBJ) $(HEAD)
 	cd ft_printf && make && cp libftprintf.a ../
-	$(CC) $(CFLAGS) $(FDF) $(LIBFT) $(FT_PRINTF) $(GNL) -o $(NAME)
+	$(CC) $(CFLAGS) $(BON_FL) -I -c $(FDF) libftprintf.a
+	$(CC) -o $(NAME) $(FDF_OBJ) $(BON_FL) libftprintf.a
 clean:
-	cd src && rm -f $(FILLER_OBJ)
-	cd libft && make clean
+	cd src && rm -f *.o
 	cd ft_printf && make clean
 
 fclean: clean
 	cd ft_printf && make fclean
-	cd libft && make fclean
 	/bin/rm -f $(NAME)
-	/bin/rm -f colors
 	/bin/rm -f libftprintf.a
-	/bin/rm -f libft.a
 
 re: fclean all
