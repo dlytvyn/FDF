@@ -17,6 +17,8 @@ void			free_struct(t_gen *gen)
 	int i;
 
 	i = 0;
+	if (!gen->list)
+		return ;
 	while (i < gen->w_h)
 	{
 		free(gen->list[i]);
@@ -31,6 +33,8 @@ void			free_array(char **array)
 	int i;
 
 	i = 0;
+	if (array[0] == NULL)
+		return ;
 	while (array[i])
 	{
 		free(array[i]);

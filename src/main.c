@@ -43,6 +43,7 @@ void			inicialization(t_gen *gen)
 	gen->deg_z = 25 * M_PI / 180;
 	gen->flag = 0;
 	gen->color_index = 0;
+	gen->list = NULL;
 }
 
 int				main(int argc, char **argv)

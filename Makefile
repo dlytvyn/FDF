@@ -26,10 +26,9 @@ FDF_OBJ = $(FDF:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(FDF_OBJ) $(HEAD)
+$(NAME): $(FDF)
 	cd ft_printf && make && cp libftprintf.a ../
-	$(CC) $(CFLAGS) $(BON_FL) -I -c $(FDF) libftprintf.a
-	$(CC) -o $(NAME) $(FDF_OBJ) $(BON_FL) libftprintf.a
+	$(CC) -o $(NAME) $(FDF) $(BON_FL) libftprintf.a
 clean:
 	cd src && rm -f *.o
 	cd ft_printf && make clean
