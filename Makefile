@@ -1,12 +1,13 @@
-NAME = fdf
+NAME = wolf3d
 FT_PRINTF = libftprintf.a
 PATH_INC = ./src/fdf.h
+LIBMLX_PATH = ./libmlx
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror 
-BON_FL = -lmlx -framework OpenGL -framework AppKit
+CFLAGS = -Wall -Wextra -Werror
+BON_FL = -lm -lmlx -lXext -lX11 -L $(LIBMLX_PATH) -I $(LIBMLX_PATH)
 HEAD = ./src/fdf.h
 
-FDF =		./src/main.c\
+SRC =		./src/main.c\
 			./src/bresenham.c\
 			./src/centering.c\
 			./src/change_coordinates.c\
@@ -28,7 +29,7 @@ all: $(NAME)
 
 $(NAME): $(FDF)
 	cd ft_printf && make && cp libftprintf.a ../
-	$(CC) -o $(NAME) $(FDF) $(BON_FL) libftprintf.a
+	$(CC) -o $(NAME) $(SRC) $(BON_FL) libftprintf.a
 clean:
 	cd src && rm -f *.o
 	cd ft_printf && make clean

@@ -43,7 +43,6 @@ char		*ft_itoa(int n)
 {
 	long long	num;
 	char		*res;
-	int			i;
 	int			size;
 	int			add;
 
@@ -51,7 +50,6 @@ char		*ft_itoa(int n)
 	size = numsize(num);
 	if (!(res = (char*)malloc(sizeof(char) * (size + 1))))
 		return (NULL);
-	i = 0;
 	res[size--] = '\0';
 	if ((add = is_neg(num)))
 		num *= (-1);

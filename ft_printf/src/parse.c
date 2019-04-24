@@ -12,7 +12,7 @@
 
 #include "print.h"
 
-char		*parse_flags(intmax_t num, t_lst *run, char *res)
+char		*parse_flags(__intmax_t num, t_lst *run, char *res)
 {
 	char	*space;
 

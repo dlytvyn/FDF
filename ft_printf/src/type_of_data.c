@@ -19,7 +19,7 @@ char		*num_di(va_list args, t_length *run, t_sp *spec)
 	if (run->z == 1)
 		res = ft_itoa_base_pt(va_arg(args, size_t));
 	else if (run->j == 1)
-		res = ft_itoa_base_pt(va_arg(args, intmax_t));
+		res = ft_itoa_base_pt(va_arg(args, __intmax_t));
 	else if (run->ll)
 		res = ft_itoa_base_pt(va_arg(args, long long int));
 	else if (run->l == 1)
@@ -42,7 +42,7 @@ char		*num_rest(va_list args, t_length *run, t_sp *spec)
 	if (run->z == 1)
 		res = ft_ib(va_arg(args, size_t), base(spec), spec);
 	else if (run->j == 1)
-		res = ft_ib(va_arg(args, uintmax_t), base(spec), spec);
+		res = ft_ib(va_arg(args, __uintmax_t), base(spec), spec);
 	else if (run->ll)
 		res = ft_ib(va_arg(args, unsigned long long int), base(spec), spec);
 	else if (run->l == 1)

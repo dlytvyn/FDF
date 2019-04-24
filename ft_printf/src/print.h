@@ -134,7 +134,7 @@ char				*num_di(va_list args, t_length *run, t_sp *spec);
 char				*num_rest(va_list args, t_length *run, t_sp *spec);
 char				*num_dou(va_list args, t_sp *spec, t_flags *flag);
 char				*ft_format(char *form, t_lst *run, va_list args);
-char				*parse_flags(intmax_t num, t_lst *run, char *res);
+char				*parse_flags(__intmax_t num, t_lst *run, char *res);
 char				*parse_accuracy(t_lst *run, char *num);
 char				*parse_wid(t_lst *run, char *num, char *accur, char *flag);
 int					ft_text_m(char *fl_ac, char *width, char *num, t_lst *run);
