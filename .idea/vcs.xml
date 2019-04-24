@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Minilibx_Installer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Minilibx_Installer/minilibx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/https:/github.com/dlytvyn/Wolf" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libmlx" vcs="Git" />
   </component>
 </project>

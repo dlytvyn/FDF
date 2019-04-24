@@ -10,26 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "wolf3d.h"
 
-static	void	add(int i, int j, int k, t_gen *gen)
+int array_len(char **ar)
 {
-	int	l;
+    int i = 0;
 
-	l = 0;
-	if (ft_strstr(gen->array[k], ",0x"))
-	{
-		while (gen->array[k][l] != 'x')
-			l++;
-		l++;
-		gen->list[i][j].color = ft_atoi_base(gen->array[k] + l, 16);
-		gen->list[i][j].in = 1;
-	}
-	else
-	{
-		gen->list[i][j].color = 16449536;
-		gen->list[i][j].in = 0;
-	}
+    while (ar[i])
+        i++;
+    return (i);
 }
 
 static	void	separate_add(t_gen *gen)
@@ -40,17 +29,19 @@ static	void	separate_add(t_gen *gen)
 
 	i = 0;
 	k = 0;
-	while (i < gen->w_h)
+	while (i < gen->map_height)
 	{
 		j = 0;
-		gen->list[i] = (t_fdf*)malloc(sizeof(t_fdf) * gen->w_w);
-		while (j < gen->w_w)
+		gen->map[i] = (int*)malloc(sizeof(int) * gen->map_width);
+		while (j < gen->map_width)
 		{
-			gen->list[i][j].x = j;
-			gen->list[i][j].y = i;
-			add(i, j, k, gen);
-			gen->list[i][j].z = ft_atoi(gen->array[k]);
-			++k && ++j;
+			if (gen->array[i][j] < '0' || gen->array[i][j] > '9')
+            {
+                ft_printf("Invalid value in map\n");
+                exit(0);
+            }
+			gen->map[i][j] = gen->array[i][j] - '0';
+			++j;
 		}
 		i++;
 	}
@@ -59,9 +50,18 @@ static	void	separate_add(t_gen *gen)
 static	void	separate_data(t_gen *gen)
 {
 	gen->array = ft_strsplit(gen->buf, ' ');
+
+    int i = 0;
+    while (gen->array[i])
+    {
+        ft_printf("Line %s\n", gen->array[i]);
+        i++;
+    }
+
+
 	ft_strdel(&gen->buf);
-	check_colors(gen);
-	if (gen->w_h * gen->w_w != array_len(gen->array))
+    ft_printf("Array len =  %d\n", array_len(gen->array));
+	if (gen->map_height!= array_len(gen->array))
 	{
 		ft_printf("{red}%s{reset}\n", "Found wrong line length. Exiting.");
 		exit_x(gen);
@@ -71,15 +71,13 @@ static	void	separate_data(t_gen *gen)
 		ft_printf("{red}%s{reset}\n", "Error! No map found!");
 		exit_x(gen);
 	}
-	gen->list = (t_fdf**)malloc(sizeof(t_fdf*) * gen->w_h);
+	gen->map = (int**)malloc(sizeof(int*) * gen->map_height);
 	separate_add(gen);
-	gen->max_x = gen->w_w - 1;
-	gen->max_y = gen->w_h - 1;
 }
 
 static	void	go_out(void)
 {
-	ft_printf("{red}%s{reset}\n", "Error! There is no file ot empty file!");
+	ft_printf("{red}%s{reset}\n", "Error! There is no file or empty file!");
 	exit(0);
 }
 
@@ -91,10 +89,19 @@ void			reader(t_gen *gen, int fd)
 
 	if (get_next_line(fd, &line) <= 0)
 		go_out();
-	gen->buf = ft_strdup(line);
 	array = ft_strsplit(line, ' ');
 	ft_strdel(&line);
-	gen->w_w = array_len(array);
+	if (array_len(array) != 2)
+    {
+	    go_out();
+    }
+	else
+    {
+        gen->map_width = ft_atoi(array[0]);
+        gen->map_height = ft_atoi(array[1]);
+    }
+    ft_printf("Width =  %d\n", gen->map_width);
+    ft_printf("Height =  %d\n", gen->map_height);
 	free_array(array);
 	while (get_next_line(fd, &line))
 	{
@@ -107,7 +114,6 @@ void			reader(t_gen *gen, int fd)
 		gen->buf = ft_strjoin(tmp, line);
 		ft_strdel(&tmp);
 		ft_strdel(&line);
-		gen->w_h++;
 	}
 	separate_data(gen);
 }

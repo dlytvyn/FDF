@@ -10,22 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "wolf3d.h"
 
 void			free_struct(t_gen *gen)
 {
 	int i;
 
 	i = 0;
-	if (!gen->list)
+	if (!gen->map)
 		return ;
-	while (i < gen->w_h)
+	while (i < gen->map_height)
 	{
-		free(gen->list[i]);
+		free(gen->map[i]);
 		i++;
 	}
-	free(gen->list);
-	gen->list = NULL;
+	free(gen->map);
+	gen->map = NULL;
 }
 
 void			free_array(char **array)

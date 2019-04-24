@@ -10,47 +10,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d605bbc8-01d2-4de2-a772-f7731ad0c94c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ft_printf/libft/ft_itoa.c" beforeDir="false" afterPath="$PROJECT_DIR$/ft_printf/libft/ft_itoa.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ft_printf/libft/ft_memmove.c" beforeDir="false" afterPath="$PROJECT_DIR$/ft_printf/libft/ft_memmove.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ft_printf/src/parse.c" beforeDir="false" afterPath="$PROJECT_DIR$/ft_printf/src/parse.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ft_printf/src/print.h" beforeDir="false" afterPath="$PROJECT_DIR$/ft_printf/src/print.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ft_printf/src/type_of_data.c" beforeDir="false" afterPath="$PROJECT_DIR$/ft_printf/src/type_of_data.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libmlx/Makefile.gen" beforeDir="false" afterPath="$PROJECT_DIR$/libmlx/Makefile.gen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libmlx/test/Makefile.gen" beforeDir="false" afterPath="$PROJECT_DIR$/libmlx/test/Makefile.gen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/_README_" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/font.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/font.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/libmlx.a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man1/mlx.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man1/mlx_loop.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man1/mlx_new_image.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man1/mlx_new_window.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man1/mlx_pixel_put.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man3/mlx.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man3/mlx_loop.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man3/mlx_new_image.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man3/mlx_new_window.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/man/man3/mlx_pixel_put.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_init_loop.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_init_loop.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_int.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_int_str_to_wordtab.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_int_str_to_wordtab.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_new_image.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_new_image.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_new_window.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_new_window.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_new_window.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_rgb.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_shaders.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_shaders.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_xpm.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/minilibx_macos/mlx_xpm.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fdf.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/fdf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bresenham.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/centering.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/centering.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/change_coordinates.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/change_coordinates.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/check_colors.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exit_x.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/exit_x.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fdf.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/wolf3d.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ft_atoi_base.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/ft_atoi_base.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/is_valid.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/is_valid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_keys.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_keys.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/max_xy.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/max_xy.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/movement.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/movement.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mp_rotation.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/print_in_window.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/print_in_window.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reader.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/reader.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scale.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wolf3d" beforeDir="false" afterPath="$PROJECT_DIR$/wolf3d" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -61,27 +40,95 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Wolf3d" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/change_coordinates.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="540">
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/centering.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/manage_keys.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-600">
+              <caret line="29" column="65" selection-start-line="29" selection-start-column="65" selection-end-line="29" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/print_in_window.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/reader.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="579">
+              <caret line="56" column="46" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ft_printf/libft/ft_strsplit.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-381" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/exit_x.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="519">
+              <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/wolf3d.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="615">
+              <caret line="63" column="30" lean-forward="true" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Makefile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+            <state relative-caret-position="450">
+              <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.c">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/fdf.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="58" column="25" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
+            <state relative-caret-position="459">
+              <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -93,6 +140,7 @@
       <find>intmax</find>
       <find>libft</find>
       <find>FTDIR</find>
+      <find>t_fdf</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -106,14 +154,27 @@
         <option value="$PROJECT_DIR$/ft_printf/src/parse.c" />
         <option value="$PROJECT_DIR$/ft_printf/libft/ft_memmove.c" />
         <option value="$PROJECT_DIR$/ft_printf/libft/ft_itoa.c" />
-        <option value="$PROJECT_DIR$/src/fdf.h" />
         <option value="$PROJECT_DIR$/libft/libft.h" />
         <option value="$PROJECT_DIR$/libft/Makefile" />
-        <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/ft_printf/Makefile" />
+        <option value="$PROJECT_DIR$/src/movement.c" />
+        <option value="$PROJECT_DIR$/src/max_xy.c" />
+        <option value="$PROJECT_DIR$/src/is_valid.c" />
+        <option value="$PROJECT_DIR$/src/change_coordinates.c" />
+        <option value="$PROJECT_DIR$/src/centering.c" />
+        <option value="$PROJECT_DIR$/src/scale.c" />
+        <option value="$PROJECT_DIR$/Makefile" />
+        <option value="$PROJECT_DIR$/src/manage_keys.c" />
+        <option value="$PROJECT_DIR$/src/print_in_window.c" />
+        <option value="$PROJECT_DIR$/src/fdf.h" />
+        <option value="$PROJECT_DIR$/src/main.c" />
+        <option value="$PROJECT_DIR$/src/exit_x.c" />
+        <option value="$PROJECT_DIR$/src/reader.c" />
+        <option value="$PROJECT_DIR$/src/wolf3d.h" />
       </list>
     </option>
   </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectConfigurationFiles">
     <option name="files">
       <list>
@@ -146,6 +207,11 @@
             <path>
               <item name="Wolf3d" type="b2602c69:ProjectViewProjectNode" />
               <item name="Wolf3d" type="462c0819:PsiDirectoryNode" />
+              <item name="ft_printf" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Wolf3d" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Wolf3d" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -156,8 +222,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/wolf3d" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -173,6 +240,13 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="Wolf" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="testmap" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" RUN_PATH="$PROJECT_DIR$/wolf3d" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -183,19 +257,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556098658523</updated>
-      <workItem from="1556098660072" duration="7715000" />
+      <workItem from="1556098660072" duration="17531000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7715000" />
+    <option name="totallyTimeSpent" value="17531000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="471" y="27" width="1400" height="1000" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24963072" />
+      <window_info id="Favorites" sideWeight="0.50057405" side_tool="true" visible="true" weight="0.24963072" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49942595" visible="true" weight="0.24963072" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
@@ -256,16 +330,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.c">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fdf.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="58" column="25" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libft/libft.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-366">
@@ -287,10 +351,102 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/maps/42.fdf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/max_xy.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="3" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/movement.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/is_valid.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="45" column="3" selection-start-line="45" selection-start-column="3" selection-end-line="45" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/change_coordinates.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/centering.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scale.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+        <state relative-caret-position="450">
+          <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/manage_keys.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-600">
+          <caret line="29" column="65" selection-start-line="29" selection-start-column="65" selection-end-line="29" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ft_printf/libft/ft_strsplit.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-381" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/print_in_window.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/exit_x.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="519">
+          <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/reader.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="579">
+          <caret line="56" column="46" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wolf3d.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="63" column="30" lean-forward="true" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
         </state>
       </provider>
     </entry>

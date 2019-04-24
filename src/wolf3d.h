@@ -21,46 +21,76 @@
 
 # define WINDOW_X 1500
 # define WINDOW_Y 1000
-# define SCALE 50
+# define TEXTURE_WIDTH 64
+# define TEXTURE_HEIGHT 64
 
-typedef struct		s_fdf
-{
-	double			x;
-	double			z;
-	double			y;
-	int				color;
-	int				in;
-}					t_fdf;
+//
+//typedef struct s_draw {
+//    int         drawStart;
+//    int         drawEnd;
+//    int         tex_pixel;
+//    int         img_pixel;
+//}t_draw;
+//
+
+typedef struct  s_textures {
+    int         texture_x;
+    int         tex_type;
+    double      wall_x;
+    double      textureFloor_x;
+    double      textureFloor_y;
+    double      wall;
+    double      player;
+    double      current;
+}               t_textures;
+
+
+typedef struct      s_casting{
+    double          dir_x;
+    double          dir_y;
+    int             stepX;
+    int             stepY;
+    int             mapX;
+    int             mapY;
+    int             hit;
+    int             side;
+    double          perpendicular_wall;
+    int             lineH;
+    double          sideDistX;
+    double          sideDistY;
+    double          deltaDistX;
+    double          deltaDistY;
+    t_textures      textures;
+}                   t_casting;
+
+
+
 
 typedef struct		s_gen
 {
-	struct s_fdf	**list;
+    int             **map;
 	int				*field;
 	char			*buf;
 	char			**array;
+	t_casting       casting;
 	int				bits_per_pixel;
 	int				size_line;
 	int				endian;
-	int				w_h;
-	int				w_w;
-	int				max_x;
-	int				max_y;
-	int				min_x;
-	int				min_y;
+	int				map_height;
+	int				map_width;
+	double          pos_x;
+	double          pos_y;
+	double          plane_x;
+	double          plane_y;
+	double          time;
+	double          old_time;
 	void			*init;
 	void			*window;
 	void			*image;
 	double			scale;
-	double			diff_x;
-	double			diff_y;
-	double			deg_x;
-	double			deg_y;
-	double			deg_z;
 	int				flag;
-	int				color_index;
 }					t_gen;
 
-void				line(t_gen *gen, t_fdf t1, t_fdf t2);
 void				centering(t_gen *gen);
 void				minus_coor(t_gen *gen);
 void				plus_coor(t_gen *gen);

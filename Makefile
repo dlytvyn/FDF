@@ -8,19 +8,15 @@ BON_FL = -lm -lmlx -lXext -lX11 -L $(LIBMLX_PATH) -I $(LIBMLX_PATH)
 HEAD = ./src/fdf.h
 
 SRC =		./src/main.c\
-			./src/bresenham.c\
 			./src/centering.c\
 			./src/change_coordinates.c\
-			./src/check_colors.c\
 			./src/ft_atoi_base.c\
 			./src/is_valid.c\
 			./src/manage_keys.c\
 			./src/max_xy.c\
 			./src/movement.c\
-			./src/mp_rotation.c\
 			./src/print_in_window.c\
 			./src/reader.c\
-			./src/scale.c\
 			./src/exit_x.c\
 
 FDF_OBJ = $(FDF:.c=.o)
